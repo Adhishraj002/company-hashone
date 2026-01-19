@@ -1,0 +1,360 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Login - Hashone Careers</title>
+    <link rel="stylesheet" href="styles.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
+    <style>
+        body {
+            background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 2rem;
+        }
+
+        .login-container {
+            background: white;
+            padding: 3rem;
+            border-radius: 20px;
+            box-shadow: var(--shadow-xl);
+            width: 100%;
+            max-width: 450px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .login-container::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 5px;
+            background: linear-gradient(90deg, var(--primary-color), var(--secondary-color));
+        }
+
+        .login-header {
+            text-align: center;
+            margin-bottom: 2.5rem;
+        }
+
+        .login-logo {
+            margin-bottom: 1.5rem;
+        }
+
+        .login-logo img {
+            height: 60px;
+            width: auto;
+            max-width: 200px;
+        }
+
+        .login-header h1 {
+            font-size: 2rem;
+            color: var(--text-dark);
+            margin-bottom: 0.5rem;
+            font-weight: 700;
+        }
+
+        .login-header p {
+            color: var(--text-light);
+            font-size: 0.95rem;
+        }
+
+        .login-form {
+            display: flex;
+            flex-direction: column;
+            gap: 1.5rem;
+        }
+
+        .form-group {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .form-group label {
+            font-weight: 600;
+            margin-bottom: 0.5rem;
+            color: var(--text-dark);
+            font-size: 0.95rem;
+        }
+
+        .form-group input {
+            padding: 1rem;
+            border: 2px solid var(--border-color);
+            border-radius: 10px;
+            font-family: inherit;
+            font-size: 1rem;
+            transition: all 0.3s ease;
+        }
+
+        .form-group input:focus {
+            outline: none;
+            border-color: var(--primary-color);
+            box-shadow: 0 0 0 3px rgba(31, 47, 79, 0.1);
+        }
+
+        .input-icon {
+            position: relative;
+        }
+
+        .input-icon i {
+            position: absolute;
+            left: 1rem;
+            top: 50%;
+            transform: translateY(-50%);
+            color: var(--text-light);
+        }
+
+        .input-icon input {
+            padding-left: 3rem;
+        }
+
+        .form-options {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            font-size: 0.9rem;
+        }
+
+        .remember-me {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .remember-me input[type="checkbox"] {
+            width: 18px;
+            height: 18px;
+            cursor: pointer;
+        }
+
+        .forgot-password {
+            color: var(--primary-color);
+            text-decoration: none;
+            transition: color 0.3s ease;
+        }
+
+        .forgot-password:hover {
+            color: var(--primary-dark);
+        }
+
+        .login-btn {
+            width: 100%;
+            padding: 1rem;
+            background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+            color: white;
+            border: none;
+            border-radius: 10px;
+            font-size: 1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            margin-top: 0.5rem;
+        }
+
+        .login-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: var(--shadow-md);
+        }
+
+        .login-btn:active {
+            transform: translateY(0);
+        }
+
+        .error-message {
+            background: #fee2e2;
+            color: #dc2626;
+            padding: 0.875rem;
+            border-radius: 8px;
+            font-size: 0.9rem;
+            display: none;
+            margin-bottom: 1rem;
+            border-left: 4px solid #dc2626;
+        }
+
+        .error-message.show {
+            display: block;
+            animation: shake 0.5s ease;
+        }
+
+        .back-to-home {
+            text-align: center;
+            margin-top: 2rem;
+            padding-top: 2rem;
+            border-top: 1px solid var(--border-color);
+        }
+
+        .back-to-home a {
+            color: var(--primary-color);
+            text-decoration: none;
+            font-weight: 500;
+            transition: color 0.3s ease;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .back-to-home a:hover {
+            color: var(--primary-dark);
+        }
+
+        @keyframes shake {
+            0%, 100% { transform: translateX(0); }
+            25% { transform: translateX(-10px); }
+            75% { transform: translateX(10px); }
+        }
+
+        @media (max-width: 480px) {
+            .login-container {
+                padding: 2rem;
+            }
+
+            .login-header h1 {
+                font-size: 1.75rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="login-container" data-aos="zoom-in">
+        <div class="login-header">
+            <div class="login-logo">
+                <img src="images/logo2.jpg" alt="Hashone Careers Logo">
+            </div>
+            <h1>Admin Login</h1>
+            <p>Sign in to manage job roles</p>
+        </div>
+
+        <div class="error-message" id="errorMessage">
+            Invalid username or password. Please try again.
+        </div>
+
+        <form class="login-form" id="loginForm">
+            <div class="form-group">
+                <label for="username">Username</label>
+                <div class="input-icon">
+                    <i class="fas fa-user"></i>
+                    <input type="text" id="username" name="username" required autocomplete="username">
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label for="password">Password</label>
+                <div class="input-icon">
+                    <i class="fas fa-lock"></i>
+                    <input type="password" id="password" name="password" required autocomplete="current-password">
+                </div>
+            </div>
+
+            <div class="form-options">
+                <label class="remember-me">
+                    <input type="checkbox" id="rememberMe">
+                    <span>Remember me</span>
+                </label>
+                <a href="#" class="forgot-password">Forgot Password?</a>
+            </div>
+
+            <button type="submit" class="login-btn">
+                <i class="fas fa-sign-in-alt"></i> Sign In
+            </button>
+        </form>
+
+        <div class="back-to-home">
+            <a href="setup.html" style="color: var(--secondary-color); margin-right: 1rem;">
+                <i class="fas fa-cog"></i> Setup Admin
+            </a>
+            <a href="index.html">
+                <i class="fas fa-arrow-left"></i> Back to Website
+            </a>
+        </div>
+    </div>
+
+    <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
+    <script>
+        AOS.init({
+            duration: 800,
+            once: true
+        });
+
+        // Check if admin credentials are set up
+        const existingCredentials = localStorage.getItem('hashoneAdminCredentials');
+        if (!existingCredentials) {
+            // Redirect to setup page if credentials don't exist
+            setTimeout(() => {
+                window.location.href = 'setup.html';
+            }, 2000);
+            
+            // Show message
+            const errorMessage = document.getElementById('errorMessage');
+            errorMessage.textContent = 'Admin credentials not configured. Redirecting to setup page...';
+            errorMessage.style.background = '#dbeafe';
+            errorMessage.style.color = '#1e40af';
+            errorMessage.style.borderLeftColor = '#3b82f6';
+            errorMessage.classList.add('show');
+        }
+
+        // Login functionality
+        document.getElementById('loginForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            const username = document.getElementById('username').value.trim();
+            const password = document.getElementById('password').value;
+            const rememberMe = document.getElementById('rememberMe').checked;
+            const errorMessage = document.getElementById('errorMessage');
+            
+            // Get stored credentials
+            const storedCredentials = JSON.parse(localStorage.getItem('hashoneAdminCredentials'));
+            
+            if (!storedCredentials) {
+                errorMessage.textContent = 'Admin credentials not configured. Please set up first.';
+                errorMessage.classList.add('show');
+                setTimeout(() => {
+                    window.location.href = 'setup.html';
+                }, 2000);
+                return;
+            }
+            
+            // Verify credentials
+            // Recreate hash with stored salt
+            const testHash = btoa(username + ':' + password + ':' + storedCredentials.salt);
+            
+            if (username === storedCredentials.username && testHash === storedCredentials.passwordHash) {
+                // Store session
+                sessionStorage.setItem('isAdminLoggedIn', 'true');
+                sessionStorage.setItem('adminUsername', username);
+                
+                if (rememberMe) {
+                    localStorage.setItem('rememberAdmin', 'true');
+                }
+                
+                // Redirect to admin page
+                window.location.href = 'admin.html';
+            } else {
+                errorMessage.textContent = 'Invalid username or password. Please try again.';
+                errorMessage.classList.add('show');
+                setTimeout(() => {
+                    errorMessage.classList.remove('show');
+                }, 5000);
+            }
+        });
+
+        // Check if already logged in
+        if (sessionStorage.getItem('isAdminLoggedIn') === 'true') {
+            window.location.href = 'admin.html';
+        }
+
+        // Auto-fill if remembered
+        if (localStorage.getItem('rememberAdmin') === 'true') {
+            document.getElementById('rememberMe').checked = true;
+        }
+    </script>
+</body>
+</html>
