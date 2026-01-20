@@ -60,13 +60,14 @@ window.addEventListener('load', () => {
 
 // Navbar scroll effect
 if (navbar) {
-    window.addEventListener('scroll', () => {
-        if (window.scrollY > 50) {
-            navbar.classList.add('scrolled');
-        } else {
-            navbar.classList.remove('scrolled');
-        }
-    });
+    window.addEventListener("scroll", () => {
+  if (window.scrollY > 50) navbar.classList.add("scrolled");
+  else navbar.classList.remove("scrolled");
+
+  if (window.scrollY > 300) scrollToTopBtn.classList.add("show");
+  else scrollToTopBtn.classList.remove("show");
+});
+
 }
 
 // Mobile menu toggle
@@ -440,7 +441,8 @@ window.addEventListener('load', () => {
     // Initialize count-up animations after a short delay
     setTimeout(() => {
         initCountUpAnimations();
-    }, 500);
+    }, 1000);
+
 });
 
 // Social Media Links Configuration
@@ -463,10 +465,12 @@ document.addEventListener('DOMContentLoaded', () => {
     
     // Initialize animations
     if (typeof AOS !== 'undefined') {
-        AOS.init({
-            duration: 1000,
-            once: true,
-            offset: 100
+        window.addEventListener("load", () => {
+            AOS.init({
+                duration: 800,
+                once: true,
+                offset: 120
+            });
         });
     }
 });
