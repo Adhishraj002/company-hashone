@@ -7,6 +7,7 @@
 
 /* Page Section Management */
 .page-section {
+    
     display: none;
 }
 
@@ -251,7 +252,7 @@ body {
     url('https://images.unsplash.com/photo-1521737604893-d14cc237f11d');
     background-size: cover;
     background-position: center;
-    background-attachment: fixed;
+    background-attachment: scroll;
     /* Fallback gradient if image doesn't load */
     background-color: #667eea;
     color: white;
@@ -265,15 +266,15 @@ body {
     left: 0;
     right: 0;
     bottom: 0;
-    background: rgba(0, 0, 0, 0.3);
+    inset: 0;
+    background: linear-gradient(to right, rgba(31,47,79,0.85), rgba(59,130,246,0.85));
     z-index: 1;
 }
 
 .hero-content {
     position: relative;
     z-index: 2;
-    max-width: 900px;
-    padding: 2rem;
+    
 }
 
 .hero-title {
@@ -485,8 +486,13 @@ section {
 
 /* Services Section */
 .services {
-    background: var(--bg-white);
+    background: #ffffff;
+    position: relative;
+    z-index: 5;
+    padding-top: 5rem;
+    margin-top: 0;
 }
+
 
 .services-grid {
     display: grid;
@@ -1951,8 +1957,16 @@ section {
 }
 
 .service-icon {
-    transition: all 0.4s ease;
+    width: 60px;
+    height: 60px;
+    background: transparent;   /* REMOVE BLUE BOX */
+    box-shadow: none;          /* REMOVE SHADOW */
+    border-radius: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
 }
+
 
 .service-card:hover .service-icon {
     transform: scale(1.1) rotate(5deg);
@@ -1989,7 +2003,6 @@ section {
 
 .contact-card:hover .contact-icon {
     transform: scale(1.2) rotate(5deg);
-    color: var(--primary-color);
 }
 
 /* Parallax effect enhancement */
@@ -2159,4 +2172,48 @@ html {
         right: 20px;
         font-size: 1rem;
     }
+}
+
+/* ===== CLEAN GRADIENT ICONS (FINAL PERFECT) ===== */
+
+.service-icon i,
+.contact-icon i,
+.team-avatar i,
+.info-item i,
+.founder-item i,
+.contact-item i,
+.meta-item i,
+.map-placeholder i,
+.scroll-indicator i,
+.social-link i,
+.service-icon-large i {
+
+    font-size: 2.2rem;
+
+    background: linear-gradient(135deg, #2563eb, #facc15);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+
+    color: transparent;
+
+    filter: none;          /* NO BLUR */
+    text-shadow: none;     /* NO SHADE */
+
+    transition: transform 0.3s ease;
+}
+
+/* Hover animation only */
+.service-icon i:hover,
+.contact-icon i:hover,
+.team-avatar i:hover,
+.info-item i:hover,
+.founder-item i:hover,
+.contact-item i:hover,
+.meta-item i:hover,
+.map-placeholder i:hover,
+.scroll-indicator i:hover,
+.social-link i:hover,
+.service-icon-large i:hover {
+    transform: scale(1.12);
 }
