@@ -1,3 +1,5 @@
+
+
 // Page Navigation System
 function showPage(pageId) {
     // Hide all pages
@@ -500,4 +502,17 @@ window.addEventListener('scroll', () => {
             hero.style.transform = `translateY(${rate}px)`;
         }
     }
+});
+
+document.querySelectorAll(".read-more-btn").forEach(btn => {
+    btn.addEventListener("click", function () {
+        const benefits = this.nextElementSibling;
+        if (benefits.style.display === "block") {
+            benefits.style.display = "none";
+            this.textContent = "Read More";
+        } else {
+            benefits.style.display = "block";
+            this.textContent = "Hide Benefits";
+        }
+    });
 });
