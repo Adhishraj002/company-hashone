@@ -2487,10 +2487,19 @@ html {
 
 /* Inner icon */
 .nav-icon i {
-    font-size: 24px;
-    background: linear-gradient(135deg, #2a3f6b);
+    font-size: 22px;
+
+    background: linear-gradient(135deg, #1f2f4f, #3b82f6);
+
+    -webkit-background-clip: text;
+    background-clip: text;
+
     -webkit-text-fill-color: transparent;
+    color: transparent;
+
+    display: inline-block;
 }
+
 
 /* Hover effect */
 .nav-icon:hover {
