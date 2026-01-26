@@ -2525,3 +2525,45 @@ html {
         margin: auto;
     }
 }
+
+/* ===== FOOTER ICON LIST STYLE ===== */
+
+.footer-section ul li {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 10px;
+}
+
+/* Icon base */
+.footer-section ul li i {
+    font-size: 14px;
+
+    background: linear-gradient(135deg, #3b82f6, #facc15);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+
+    min-width: 18px;
+    transition: transform 0.3s ease, opacity 0.3s ease;
+    opacity: 0.85;
+}
+
+/* Hover animation */
+.footer-section ul li:hover i {
+    transform: translateX(4px) scale(1.15);
+    opacity: 1;
+}
+
+/* Link hover sync */
+.footer-section ul li a {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.footer-section ul {
+    list-style: none;      /* removes dot */
+    padding-left: 0;       /* removes left gap */
+    margin: 0;
+}
