@@ -912,8 +912,10 @@
         }
 
         // Load admin username
-        const adminUsername = sessionStorage.getItem('adminUsername') || 'Admin';
+        const storedAdmin = JSON.parse(localStorage.getItem('hashoneAdminCredentials'));
+        const adminUsername = storedAdmin ? storedAdmin.username : 'Admin';
         document.getElementById('adminUsername').textContent = adminUsername;
+
 
         // Tab switching
         function switchTab(tabName, element) {
@@ -1115,9 +1117,10 @@
 
         function handleLogout() {
             sessionStorage.removeItem('isAdminLoggedIn');
-            sessionStorage.removeItem('adminUsername');
+            // DO NOT delete admin credentials
             window.location.href = 'login.html';
         }
+
 
         // Form submission
         document.getElementById('jobForm').addEventListener('submit', function(e) {
