@@ -2567,3 +2567,8 @@ html {
     padding-left: 0;       /* removes left gap */
     margin: 0;
 }
+
+/* Make Open Roles icons smaller */
+.role-card .meta-item i {
+    font-size: 0.85rem !important;
+}
