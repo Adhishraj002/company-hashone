@@ -2383,31 +2383,47 @@ html {
 }
 
 .contact-hero {
-  background: linear-gradient(135deg, #112449, #113268);
+  margin-top: 70px;
+  padding: 3.5rem 0;   /* 🔥 reduced height */
+
+  background:
+    linear-gradient(
+      90deg,
+      rgba(31,47,79,0.92) 45%,
+      rgba(31,47,79,0.6) 75%,
+      rgba(31,47,79,0.2) 100%
+    ),
+    url("https://images.unsplash.com/photo-1522071820081-009f0129c71c");
+
+  background-size: cover;
+  background-position: right center;
   color: white;
-  padding: 8rem 0 5rem;
-  margin-top: 90px;   
 }
+
+
 
 
 .contact-hero-grid {
   display: grid;
-  grid-template-columns: 1.2fr 1fr;
-  align-items: center;
-  gap: 3rem;
+  grid-template-columns: 1fr;
+  max-width: 680px;   /* narrow like Zyoin */
 }
 
+
 .contact-hero-text h1 {
-  font-size: 3rem;
+  font-size: 2.6rem;
+  font-weight: 800;
+  line-height: 1.2;
   margin: 1rem 0;
 }
 
 .contact-hero-text p {
-  font-size: 1.1rem;
-  color: #ffffff;
+  font-size: 1.05rem;
   opacity: 0.9;
+  max-width: 520px;
   margin-bottom: 2rem;
 }
+
 
 .contact-hero-image img {
   width: 100%;
@@ -2416,21 +2432,27 @@ html {
 }
 
 .contact-hero-text .section-tag {
-  background: rgba(255,255,255,0.15);
-  color: #ffffff;
+  background: transparent;
+  padding: 0;
+  color: #facc15;   /* gold accent */
   font-weight: 600;
+  letter-spacing: 0.4px;
 }
 
+
 .contact-hero .btn-primary {
-  background: #ffffff;
-  color: #1f2f4f;
+  background: white;
+  color: #0f172a;
+  padding: 0.9rem 2.4rem;
   font-weight: 700;
+  border-radius: 10px;
 }
 
 .contact-hero .btn-primary:hover {
   background: #facc15;
-  color: #1f2f4f;
+  color: #0f172a;
 }
+
 
 .contact-hero-text {
   position: relative;
@@ -2459,6 +2481,17 @@ html {
         font-size: 0.7rem;
         padding: 5px 10px;
     }
+}
+
+@media (max-width: 768px) {
+  .contact-hero {
+    padding: 3.5rem 0;
+    background-position: center;
+  }
+
+  .contact-hero-text h1 {
+    font-size: 2.2rem;
+  }
 }
 
 /* Top-right social icons near hamburger */
@@ -2571,4 +2604,289 @@ html {
 /* Make Open Roles icons smaller */
 .role-card .meta-item i {
     font-size: 0.85rem !important;
+}
+
+/* ===== CONTACT CUSTOM LAYOUT ===== */
+
+.contact-layout {
+  background: var(--bg-light);
+  padding-top: 4rem;
+}
+
+/* MAIN 2-COLUMN GRID */
+.contact-main-grid {
+  display: grid;
+  grid-template-columns: 1fr 1.2fr;
+  gap: 3rem;
+  align-items: start;
+}
+
+/* LEFT COLUMN STACK */
+.contact-left {
+  display: grid;
+  gap: 2.5rem;
+}
+
+
+/* IMAGE BOX */
+/* ===== PREMIUM IMAGE CARD (Zyoin Style) ===== */
+
+.contact-image-box {
+  position: relative;
+  height: 280px;
+  border-radius: 22px;
+  overflow: hidden;
+
+  background: #000;
+  box-shadow:
+    0 20px 45px rgba(31,47,79,0.25),
+    inset 0 0 0 1px rgba(255,255,255,0.08);
+}
+
+.contact-image-box img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  filter: saturate(1.05) contrast(1.05);
+}
+
+
+/* IMAGE OVERLAY */
+.contact-image-box .image-overlay {
+  position: absolute;
+  inset: 0;
+
+  background:
+    linear-gradient(
+      to top,
+      rgba(15,23,42,0.92),
+      rgba(15,23,42,0.35),
+      transparent
+    );
+
+  color: white;
+  padding: 2rem;
+
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+}
+
+.contact-image-box .image-overlay h3 {
+  font-size: 1.4rem;
+  font-weight: 700;
+  margin-bottom: 0.3rem;
+}
+
+.contact-image-box .image-overlay p {
+  font-size: 0.9rem;
+  opacity: 0.85;
+}
+
+.contact-image-box::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border-radius: 22px;
+  pointer-events: none;
+
+  box-shadow:
+    inset 0 0 0 1px rgba(250,204,21,0.18);
+}
+
+
+/* FORM BOX */
+/* ===== BRAND MATCH FORM BOX ===== */
+
+.contact-form-box {
+  background:
+    linear-gradient(
+      135deg,
+      #1f2f4f,
+      #243b6b
+    );
+
+  color: white;
+  padding: 3.2rem;
+  border-radius: 24px;
+
+  box-shadow:
+    0 25px 60px rgba(31,47,79,0.35),
+    inset 0 0 0 1px rgba(255,255,255,0.08);
+}
+
+
+.contact-form input,
+.contact-form textarea,
+.contact-form select {
+  background: rgba(255,255,255,0.08);
+  border: 1px solid rgba(255,255,255,0.15);
+  color: white;
+}
+
+.contact-form input:focus,
+.contact-form textarea:focus,
+.contact-form select:focus {
+  background: rgba(255,255,255,0.15);
+  border-color: #facc15;
+}
+
+
+.full-btn {
+  width: 100%;
+  margin-top: 1rem;
+}
+
+@media (max-width: 992px) {
+  .contact-main-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .contact-image-box {
+    height: 220px;
+  }
+}
+
+/* ===== CONTACT FORM ===== */
+
+.contact-form-box h3 {
+  font-size: 1.9rem;
+  font-weight: 800;
+  margin-bottom: 0.4rem;
+}
+
+.form-subtitle {
+  font-size: 0.95rem;
+  opacity: 0.85;
+  margin-bottom: 2.2rem;
+}
+
+
+.contact-form .form-group {
+  margin-bottom: 1rem;
+}
+
+.contact-form input,
+.contact-form textarea,
+.contact-form select {
+  width: 100%;
+  padding: 0.95rem 1rem;
+
+  background: rgba(255,255,255,0.08);
+  border: 1px solid rgba(255,255,255,0.18);
+  border-radius: 10px;
+
+  color: white;
+  font-size: 0.95rem;
+
+  transition: all 0.3s ease;
+}
+
+.contact-form input::placeholder,
+.contact-form textarea::placeholder {
+  color: rgba(255,255,255,0.65);
+}
+
+
+.contact-form select {
+  appearance: none;
+  cursor: pointer;
+}
+
+.contact-form input:focus,
+.contact-form textarea:focus,
+.contact-form select:focus {
+  outline: none;
+  border-color: #facc15;
+  background: rgba(255,255,255,0.14);
+  box-shadow: 0 0 0 2px rgba(250,204,21,0.25);
+}
+
+.form-consent {
+  display: flex;
+  align-items: center;     /* 🔥 FIX */
+  gap: 10px;
+
+  font-size: 0.8rem;
+  opacity: 0.9;
+
+  margin: 1.4rem 0;
+  line-height: 1.4;
+}
+
+.form-consent input[type="checkbox"] {
+  width: 16px;
+  height: 16px;
+  margin: 0;               /* 🔥 REMOVE OFFSET */
+  accent-color: #facc15;   /* optional: brand gold */
+}
+
+
+.full-btn {
+  width: 100%;
+}
+
+.contact-layout {
+  overflow-x: hidden;
+}
+
+.contact-form .btn-primary {
+  background: linear-gradient(135deg,#facc15,#eab308);
+  color: #0f172a;
+
+  font-weight: 800;
+  padding: 1rem;
+  border-radius: 12px;
+
+  margin-top: 1.2rem;
+}
+
+.contact-form .btn-primary:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 15px 35px rgba(250,204,21,0.35);
+}
+.contact-main-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 3rem;
+  align-items: start;
+}
+
+/* LEFT STACK */
+.contact-left {
+  display: grid;
+  gap: 2rem;
+}
+
+/* RIGHT OFFSET FORM */
+.contact-right {
+  display: grid;
+  grid-template-rows: auto auto auto auto;
+}
+
+/* PUSH FORM DOWN */
+.contact-form-box {
+  grid-row: 3;   /* ⬅️ MAGIC LINE */
+}
+
+.social-links {
+  margin-top: 3.5rem;   /* ✅ SPACE BETWEEN FORM & SOCIAL */
+}
+
+.social-links {
+  margin-top: 3.5rem;
+  position: relative;
+}
+
+.social-links::before {
+  content: "";
+  position: absolute;
+  top: -1.8rem;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 80px;
+  height: 3px;
+  background: linear-gradient(90deg, #1f2f4f, #facc15);
+  border-radius: 3px;
+  opacity: 0.6;
 }
