@@ -95,7 +95,7 @@
   /* Brand Colors from Logo */
   --primary-color: #1f2f4f;      /* Logo Navy */
   --primary-dark: #111c33;       
-  --secondary-color: #3b82f6;   /* Soft blue accent */
+  --secondary-color: #395685;   /* Soft blue accent */
   --accent-color: #facc15;      /* Premium gold highlight */
 
   /* Text */
@@ -114,6 +114,10 @@
   --shadow-md: 0 8px 18px rgba(31,47,79,0.12);
   --shadow-lg: 0 18px 30px rgba(31,47,79,0.18);
   --shadow-xl: 0 28px 45px rgba(31,47,79,0.22);
+}
+
+.highlight {
+  color: #facc15;
 }
 
 
@@ -141,7 +145,6 @@ body {
     right: 0;
     background: rgba(255,255,255,0.96);
     border-bottom: 2px solid var(--primary-color);
-    backdrop-filter: blur(12px);
     box-shadow: var(--shadow-sm);
     z-index: 1000;
     transition: all 0.3s ease;
@@ -832,8 +835,7 @@ section {
 }
 
 .role-card {
-    background: rgba(255, 255, 255, 0.95);
-    backdrop-filter: blur(10px);
+    background: #1f2f4f;
     padding: 2.5rem;
     border-radius: 20px;
     box-shadow: 0 8px 32px rgba(31, 47, 79, 0.1);
@@ -911,7 +913,7 @@ section {
     font-weight: 700;
     margin-bottom: 1rem;
     color: var(--text-dark);
-    background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+    background: linear-gradient(135deg, var(--bg-white), var(--bg-white));
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
     background-clip: text;
@@ -937,7 +939,7 @@ section {
     font-weight: 600;
     line-height: 1;
 
-    color: var(--text-light);
+    color: var(--bg-white);
     background: linear-gradient(
         135deg,
         rgba(31,47,79,0.06),
@@ -965,7 +967,7 @@ section {
 
 
 .role-description {
-    color: var(--text-light);
+    color: var(--bg-white);
     line-height: 1.8;
     margin-bottom: 1.5rem;
     position: relative;
@@ -983,8 +985,8 @@ section {
 
 .btn-apply {
     flex: 1;
-    background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
-    color: white;
+    background: linear-gradient(135deg, var(--accent-color), var(--accent-color));
+    color: #1f2f4f;
     padding: 1rem 1.5rem;
     border-radius: 12px;
     text-decoration: none;
@@ -1003,7 +1005,7 @@ section {
     left: -100%;
     width: 100%;
     height: 100%;
-    background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.3), transparent);
+    background: linear-gradient(90deg, transparent, rgba(163, 109, 109, 0.3), transparent);
     transition: left 0.5s ease;
 }
 
@@ -1012,7 +1014,7 @@ section {
 }
 
 .btn-apply:hover {
-    background: linear-gradient(135deg, var(--primary-dark), var(--secondary-color));
+    background: linear-gradient(135deg, var(--accent-color), var(--secondary-color));
     transform: translateY(-3px);
     box-shadow: 0 6px 20px rgba(31, 47, 79, 0.3);
 }
