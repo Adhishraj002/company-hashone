@@ -172,6 +172,15 @@ let jobs = [
         type: "Internship",
         description: "Basic understanding of UI/UX principles, wireframing, and user-centric design. Familiarity with design tools such as Figma or similar platforms.",
         formUrl: "#"
+    },
+    {
+        id: 5,
+        title: "Fullstack Web Application Developer",
+        location: "pune",
+        experience: "4-7 Years",
+        type: "Full-Time",
+        description: "Experience in building and maintaining fullstack web applications. Proficiency in both frontend and backend technologies.",
+        formUrl: "#"
     }
 ];
 

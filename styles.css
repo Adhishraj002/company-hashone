@@ -312,6 +312,7 @@ body {
     margin-bottom: 3rem;
     opacity: 0.95;
     animation: fadeInUp 1s ease;
+    color: #facc15
 }
 
 .hero-stats {
@@ -913,7 +914,7 @@ section {
     font-weight: 700;
     margin-bottom: 1rem;
     color: var(--text-dark);
-    background: linear-gradient(135deg, var(--bg-white), var(--bg-white));
+    background: linear-gradient(135deg, var(--accent-color), var(--bg-white));
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
     background-clip: text;
@@ -2372,6 +2373,38 @@ html {
     color: white;
 }
 
+.services-cta-rectangle h2 {
+    font-size: 2.4rem;
+    font-weight: 800;
+    letter-spacing: 0.5px;     /* 🔥 space between letters */
+    line-height: 1.3;          /* 🔥 space between lines */
+    margin-bottom: 1rem;
+}
+
+.services-cta-rectangle p {
+    font-size: 1.1rem;
+    line-height: 1.7;          /* 🔥 this fixes the cramped look */
+    letter-spacing: 0.3px;
+    max-width: 720px;
+    margin: 0 auto 2rem;
+    opacity: 0.95;
+}
+
+.services-cta-rectangle .btn {
+    background: linear-gradient(135deg, #facc15, #deaf20);
+    color: #0f172a;
+    font-weight: 800;
+    padding: 1rem 2.8rem;
+    border-radius: 12px;
+    letter-spacing: 0.5px;
+}
+
+.services-cta-rectangle .btn:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 15px 35px rgba(250,204,21,0.45);
+}
+
+
 @media (max-width: 992px) {
   .services-grid-layout {
       grid-template-columns: repeat(2, 1fr);
@@ -2891,4 +2924,27 @@ html {
   background: linear-gradient(90deg, #1f2f4f, #facc15);
   border-radius: 3px;
   opacity: 0.6;
+}
+
+.team-avatar i {
+    display: none;
+}
+
+.team-avatar img {
+    object-fit: cover;
+    object-position: center top;
+}
+
+/* HOME HERO – Our Services button only */
+.hero .hero-buttons .btn-primary {
+    background: linear-gradient(135deg, #facc15, #eab308); /* GOLD */
+    color: #0f172a;
+    font-weight: 800;
+}
+
+/* Hover effect */
+.hero .hero-buttons .btn-primary:hover {
+    background: linear-gradient(135deg, #eab308, #facc15);
+    transform: translateY(-3px);
+    box-shadow: 0 15px 35px rgba(250,204,21,0.45);
 }
