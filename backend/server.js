@@ -39,10 +39,10 @@ db.serialize(() => {
   `);
 
   // Create default admin (once)
-  const hashed = bcrypt.hashSync("admin123", 10);
+  const hashed = bcrypt.hashSync("1234567890", 10);
   db.run(
     `INSERT OR IGNORE INTO admin (id, username, password)
-     VALUES (1, 'admin', '1234567890')`,
+     VALUES (1, 'admin', ?)`,
     [hashed]
   );
 });
