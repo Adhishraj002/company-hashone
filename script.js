@@ -136,68 +136,20 @@ function initCountUpAnimations() {
 }
 
 // Job Roles CRUD Operations
-let jobs = [
-    {
-        id: 1,
-        title: "Business Development Executive – Digital Marketing",
-        location: "Coimbatore",
-        experience: "1–3 Years",
-        type: "Full-Time",
-        description: "Experience in client acquisition and business development for digital marketing services. Strong understanding of digital marketing offerings and client engagement.",
-        formUrl: "#"
-    },
-    {
-        id: 2,
-        title: "Video Editor",
-        location: "Coimbatore",
-        experience: "1–3 Years",
-        type: "Full-Time",
-        description: "Experience in editing short-form and long-form videos for digital platforms. Strong understanding of storytelling, transitions, and visual pacing.",
-        formUrl: "#"
-    },
-    {
-        id: 3,
-        title: "HR Intern",
-        location: "Coimbatore",
-        experience: "Fresher / Student",
-        type: "Internship",
-        description: "Interest in recruitment, HR operations, and candidate coordination. Strong communication skills and willingness to learn.",
-        formUrl: "#"
-    },
-    {
-        id: 4,
-        title: "UI/UX Intern",
-        location: "Coimbatore",
-        experience: "Fresher / Student",
-        type: "Internship",
-        description: "Basic understanding of UI/UX principles, wireframing, and user-centric design. Familiarity with design tools such as Figma or similar platforms.",
-        formUrl: "#"
-    },
-    {
-        id: 5,
-        title: "Fullstack Web Application Developer",
-        location: "pune",
-        experience: "4-7 Years",
-        type: "Full-Time",
-        description: "Experience in building and maintaining fullstack web applications. Proficiency in both frontend and backend technologies.",
-        formUrl: "#"
-    }
-];
+let jobs = [];
 
 // Load jobs from localStorage on page load
 function loadJobs() {
-    const savedJobs = localStorage.getItem('hashoneJobs');
-    if (savedJobs) {
-        jobs = JSON.parse(savedJobs);
-    }
-    renderJobs();
-    loadJobsPreview();
+    fetch("http://localhost:3000/jobs")
+        .then(res => res.json())
+        .then(data => {
+            jobs = data;
+            renderJobs();
+            loadJobsPreview();
+        })
+        .catch(err => console.error(err));
 }
 
-// Save jobs to localStorage
-function saveJobs() {
-    localStorage.setItem('hashoneJobs', JSON.stringify(jobs));
-}
 
 // Render jobs to the page (public view - no admin controls)
 function renderJobs() {

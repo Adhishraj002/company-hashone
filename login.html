@@ -276,85 +276,48 @@
             </a>
         </div>
     </div>
-
     <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
-    <script>
-        AOS.init({
-            duration: 800,
-            once: true
-        });
+<script>
+AOS.init({
+    duration: 800,
+    once: true
+});
 
-        // Check if admin credentials are set up
-        const existingCredentials = localStorage.getItem('hashoneAdminCredentials');
-        if (!existingCredentials) {
-            // Redirect to setup page if credentials don't exist
-            setTimeout(() => {
-                window.location.href = 'setup.html';
-            }, 2000);
-            
-            // Show message
-            const errorMessage = document.getElementById('errorMessage');
-            errorMessage.textContent = 'Admin credentials not configured. Redirecting to setup page...';
-            errorMessage.style.background = '#dbeafe';
-            errorMessage.style.color = '#1e40af';
-            errorMessage.style.borderLeftColor = '#3b82f6';
+document.getElementById('loginForm').addEventListener('submit', function (e) {
+    e.preventDefault();
+
+    const username = document.getElementById('username').value.trim();
+    const password = document.getElementById('password').value;
+    const errorMessage = document.getElementById('errorMessage');
+
+    errorMessage.classList.remove('show');
+
+    fetch("http://localhost:3000/admin/login", {
+        method: "POST",
+        headers: {
+            "Content-Type": "application/json"
+        },
+        body: JSON.stringify({ username, password })
+    })
+    .then(res => res.json())
+    .then(data => {
+        if (data.token) {
+            // SAVE TOKEN
+            localStorage.setItem("adminToken", data.token);
+
+            // REDIRECT
+            window.location.href = "admin.html";
+        } else {
+            errorMessage.textContent = "Invalid username or password";
             errorMessage.classList.add('show');
         }
+    })
+    .catch(() => {
+        errorMessage.textContent = "Server not reachable";
+        errorMessage.classList.add('show');
+    });
+});
+</script>
 
-        // Login functionality
-        document.getElementById('loginForm').addEventListener('submit', function(e) {
-            e.preventDefault();
-            
-            const username = document.getElementById('username').value.trim();
-            const password = document.getElementById('password').value;
-            const rememberMe = document.getElementById('rememberMe').checked;
-            const errorMessage = document.getElementById('errorMessage');
-            
-            // Get stored credentials
-            const storedCredentials = JSON.parse(localStorage.getItem('hashoneAdminCredentials'));
-            
-            if (!storedCredentials) {
-                errorMessage.textContent = 'Admin credentials not configured. Please set up first.';
-                errorMessage.classList.add('show');
-                setTimeout(() => {
-                    window.location.href = 'setup.html';
-                }, 2000);
-                return;
-            }
-            
-            // Verify credentials
-            // Recreate hash with stored salt
-            const testHash = btoa(username + ':' + password + ':' + storedCredentials.salt);
-            
-            if (username === storedCredentials.username && testHash === storedCredentials.passwordHash) {
-                // Store session
-                sessionStorage.setItem('isAdminLoggedIn', 'true');
-                sessionStorage.setItem('adminUsername', username);
-                
-                if (rememberMe) {
-                    localStorage.setItem('rememberAdmin', 'true');
-                }
-                
-                // Redirect to admin page
-                window.location.href = 'admin.html';
-            } else {
-                errorMessage.textContent = 'Invalid username or password. Please try again.';
-                errorMessage.classList.add('show');
-                setTimeout(() => {
-                    errorMessage.classList.remove('show');
-                }, 5000);
-            }
-        });
-
-        // Check if already logged in
-        if (sessionStorage.getItem('isAdminLoggedIn') === 'true') {
-            window.location.href = 'admin.html';
-        }
-
-        // Auto-fill if remembered
-        if (localStorage.getItem('rememberAdmin') === 'true') {
-            document.getElementById('rememberMe').checked = true;
-        }
-    </script>
 </body>
 </html>

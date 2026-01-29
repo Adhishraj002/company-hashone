@@ -906,15 +906,15 @@
             once: true
         });
 
-        // Check authentication
-        if (sessionStorage.getItem('isAdminLoggedIn') !== 'true') {
-            window.location.href = 'login.html';
+        // Check authentication using backend token
+        const token = localStorage.getItem("adminToken");
+        if (!token) {
+            window.location.href = "login.html";
         }
 
-        // Load admin username
-        const storedAdmin = JSON.parse(localStorage.getItem('hashoneAdminCredentials'));
-        const adminUsername = storedAdmin ? storedAdmin.username : 'Admin';
-        document.getElementById('adminUsername').textContent = adminUsername;
+        // Admin display name (static for now)
+        document.getElementById('adminUsername').textContent = 'Admin';
+
 
 
         // Tab switching
@@ -985,18 +985,20 @@
             reader.readAsDataURL(file);
         }
 
+  
         function loadJobs() {
-            const savedJobs = localStorage.getItem('hashoneJobs');
-            if (savedJobs) {
-                jobs = JSON.parse(savedJobs);
-            }
-            renderJobs();
-            updateStats();
+            fetch("http://localhost:3000/jobs")
+            .then(res => res.json())
+            .then(data => {
+                jobs = data;
+                renderJobs();
+                updateStats();
+            })
+            .catch(err => {
+                console.error("Failed to load jobs", err);
+            });
         }
 
-        function saveJobs() {
-            localStorage.setItem('hashoneJobs', JSON.stringify(jobs));
-        }
 
         function renderJobs() {
             const jobsGrid = document.getElementById('jobsGrid');
@@ -1107,18 +1109,27 @@
         }
 
         function deleteJob(id) {
-            if (confirm('Are you sure you want to delete this job posting?')) {
-                jobs = jobs.filter(job => job.id !== id);
-                saveJobs();
-                renderJobs();
-                updateStats();
-            }
+            if (!confirm("Are you sure you want to delete this job posting?")) return;
+
+            fetch(`http://localhost:3000/jobs/${id}`, {
+                method: "DELETE",
+                headers: {
+                    "Authorization": "Bearer " + localStorage.getItem("adminToken")
+                }
+            })
+            .then(() => {
+                loadJobs();
+                showNotification("Job deleted successfully");
+            })
+            .catch(() => {
+                showNotification("Delete failed", "error");
+            });
         }
 
+
         function handleLogout() {
-            sessionStorage.removeItem('isAdminLoggedIn');
-            // DO NOT delete admin credentials
-            window.location.href = 'login.html';
+            localStorage.removeItem("adminToken");
+            window.location.href = "login.html";
         }
 
 
@@ -1136,20 +1147,28 @@
                 formUrl: document.getElementById('jobFormUrl').value
             };
 
-            if (jobId) {
-                const index = jobs.findIndex(job => job.id === parseInt(jobId));
-                if (index !== -1) {
-                    jobs[index] = { ...jobs[index], ...jobData };
-                }
-            } else {
-                const newId = jobs.length > 0 ? Math.max(...jobs.map(j => j.id)) + 1 : 1;
-                jobs.push({ id: newId, ...jobData });
-            }
+            const method = jobId ? "PUT" : "POST";
+            const url = jobId
+            ? `http://localhost:3000/jobs/${jobId}`
+            : "http://localhost:3000/jobs";
 
-            saveJobs();
-            renderJobs();
-            updateStats();
-            resetForm();
+            fetch(url, {
+                method,
+                headers: {
+                    "Content-Type": "application/json",
+                    "Authorization": "Bearer " + localStorage.getItem("adminToken")
+                },
+                body: JSON.stringify(jobData)
+            })
+            .then(() => {
+                resetForm();
+                loadJobs();
+                showNotification("Job saved successfully!");
+            })
+            .catch(() => {
+                showNotification("Failed to save job", "error");
+            });
+
 
             // Show success message
             showNotification('Job saved successfully!');
@@ -1449,3 +1468,4 @@
     </script>
 </body>
 </html>
+
