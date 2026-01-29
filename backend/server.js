@@ -13,7 +13,7 @@ app.use(cors({
 
 app.use(express.json());
 
-const SECRET = "hashone_super_secret_key";
+const SECRET = "hashonecareers1234";
 
 // ---------------- DATABASE ----------------
 const db = new sqlite3.Database("./hashone.db");
