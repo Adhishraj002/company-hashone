@@ -1,5 +1,6 @@
 
 const API_BASE = "https://company-hashone.onrender.com";
+const scrollToTopBtn = document.getElementById("scrollToTop");
 
 // Page Navigation System
 function showPage(pageId) {
@@ -67,8 +68,10 @@ if (navbar) {
   if (window.scrollY > 50) navbar.classList.add("scrolled");
   else navbar.classList.remove("scrolled");
 
-  if (window.scrollY > 300) scrollToTopBtn.classList.add("show");
-  else scrollToTopBtn.classList.remove("show");
+  if (scrollToTopBtn) {
+    if (window.scrollY > 300) scrollToTopBtn.classList.add("show");
+    else scrollToTopBtn.classList.remove("show");
+}
 });
 
 }
@@ -158,6 +161,12 @@ function renderJobs() {
     const rolesGrid = document.getElementById('rolesGrid');
     if (!rolesGrid) return;
     
+
+    if (jobs.length === 0) {
+        rolesGrid.innerHTML = "<p>No open positions right now.</p>";
+        return;
+    }
+
     rolesGrid.innerHTML = '';
     
     jobs.forEach((job, index) => {
@@ -185,7 +194,7 @@ function renderJobs() {
             </div>
             <p class="role-description">${job.description}</p>
             <div class="role-actions">
-                <a href="${job.formUrl}" target="_blank" class="btn-apply">Apply Now</a>
+                <a href="#contact" data-page="contact" class="btn-apply">Apply Now</a>
             </div>
         `;
         rolesGrid.appendChild(jobCard);
