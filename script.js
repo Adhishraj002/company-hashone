@@ -1,4 +1,5 @@
 
+const API_BASE = "https://company-hashone.onrender.com";
 
 // Page Navigation System
 function showPage(pageId) {
@@ -140,15 +141,16 @@ let jobs = [];
 
 // Load jobs from localStorage on page load
 function loadJobs() {
-    fetch("http://localhost:3000/jobs")
+    fetch(`${API_BASE}/jobs`)
         .then(res => res.json())
         .then(data => {
             jobs = data;
             renderJobs();
             loadJobsPreview();
         })
-        .catch(err => console.error(err));
+        .catch(err => console.error("Job load error:", err));
 }
+
 
 
 // Render jobs to the page (public view - no admin controls)
