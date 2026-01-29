@@ -2931,9 +2931,21 @@ html {
 }
 
 .team-avatar img {
+    width: 100%;
+    height: 100%;
     object-fit: cover;
-    object-position: center top;
+
+    /* BASE CENTER */
+    object-position:
+        calc(50% + var(--move-x, 0px))
+        calc(25% + var(--move-y, 0px));
+
+    /* ZOOM CONTROL */
+    transform: scale(var(--zoom, 1));
+
+    transition: transform 0.3s ease;
 }
+
 
 /* HOME HERO – Our Services button only */
 .hero .hero-buttons .btn-primary {
