@@ -1221,24 +1221,114 @@ section {
 }
 
 /* Page Header (for detail pages) */
+/* ===== PREMIUM INNER PAGE HERO (CONTACT-STYLE) ===== */
 .page-header {
-    background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
-    color: white;
-    padding: 8rem 0 4rem;
-    text-align: center;
+    position: relative;
     margin-top: 70px;
+    min-height: 320px;
+
+    display: flex;
+    align-items: center;
+
+    color: white;
+    overflow: hidden;
+
+    background:
+      linear-gradient(
+        90deg,
+        rgba(31,47,79,0.95) 35%,
+        rgba(31,47,79,0.75) 60%,
+        rgba(31,47,79,0.35) 100%
+      );
 }
 
+/* content container */
+.page-header .container {
+    position: relative;
+    z-index: 2;
+    max-width: 700px;
+}
+
+/* dark overlay for depth */
+.page-header::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background:
+      radial-gradient(
+        circle at left,
+        rgba(15,23,42,0.35),
+        transparent 60%
+      );
+}
+
+/* titles */
 .page-header h1 {
-    font-size: 3rem;
-    font-weight: 700;
-    margin-bottom: 1rem;
+    font-size: 2.8rem;
+    font-weight: 800;
+    line-height: 1.2;
+    margin-bottom: 0.75rem;
 }
 
 .page-header p {
-    font-size: 1.25rem;
-    opacity: 0.95;
+    font-size: 1.1rem;
+    color: #facc15;
+    max-width: 520px;
 }
+
+#about .page-header {
+    background:
+      linear-gradient(
+        90deg,
+        rgba(31,47,79,0.95) 35%,
+        rgba(31,47,79,0.75) 60%,
+        rgba(31,47,79,0.35) 100%
+      ),
+      url("https://images.unsplash.com/photo-1521737604893-d14cc237f11d");
+
+    background-size: cover;
+    background-position: right center;
+}
+
+#services .page-header {
+    background:
+      linear-gradient(
+        90deg,
+        rgba(31,47,79,0.95) 35%,
+        rgba(31,47,79,0.75) 60%,
+        rgba(31,47,79,0.35) 100%
+      ),
+      url("https://images.unsplash.com/photo-1556761175-5973dc0f32e7");
+
+    background-size: cover;
+    background-position: right center;
+}
+
+#roles .page-header {
+    background:
+      linear-gradient(
+        90deg,
+        rgba(31,47,79,0.95) 35%,
+        rgba(31,47,79,0.75) 60%,
+        rgba(31,47,79,0.35) 100%
+      ),
+      url("https://images.unsplash.com/photo-1517248135467-4c7edcad34c4?auto=format&fit=crop&w=1920&q=80");
+
+    background-size: cover;
+    background-position: right center;
+}
+
+@media (max-width: 768px) {
+  .page-header {
+    min-height: 260px;
+    text-align: center;
+  }
+
+  .page-header .container {
+    margin: auto;
+  }
+}
+
 
 /* Service Link */
 .service-link {
