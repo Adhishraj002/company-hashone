@@ -3691,7 +3691,7 @@ body:has(.admin-navbar) {
 
   /* ---------- ABOUT / TEAM ---------- */
   .founder-item--horizontal {
-    grid-template-columns: 1fr;
+    grid-template-columns: 2fr;
     text-align: center;
   }
 
@@ -3701,7 +3701,7 @@ body:has(.admin-navbar) {
   }
 
   .team-grid {
-    grid-template-columns: repeat(2, 2fr);
+    grid-template-columns: repeat(2, 1fr);
     gap: 1.2rem;
   }
 
