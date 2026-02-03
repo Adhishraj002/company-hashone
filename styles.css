@@ -3801,9 +3801,3 @@ body:has(.admin-navbar) {
     font-size: 0.85rem;
   }
 }
-@media (max-width: 420px) {
-  .founder-list,
-  .team-grid {
-    grid-template-columns: 1fr;
-  }
-}
