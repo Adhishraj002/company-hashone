@@ -326,119 +326,50 @@
         </div>
     </div>
 
+    <script src="config.js"></script>
     <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
     <script>
-        AOS.init({
-            duration: 800,
-            once: true
-        });
+    var API_BASE = window.API_BASE_URL || "http://localhost:3000";
+    AOS.init({ duration: 800, once: true });
 
-        // Check if already set up
-        const existingCredentials = localStorage.getItem('hashoneAdminCredentials');
-        if (existingCredentials) {
-            // If credentials exist, redirect to login
-            window.location.href = 'login.html';
+    document.getElementById("setupForm").addEventListener("submit", function(e) {
+        e.preventDefault();
+        var username = document.getElementById("username").value.trim();
+        var password = document.getElementById("password").value;
+        var confirm = document.getElementById("confirmPassword").value;
+        var error = document.getElementById("errorMessage");
+        var success = document.getElementById("successMessage");
+        error.classList.remove("show");
+        success.classList.remove("show");
+
+        if (!username || password.length < 6 || password !== confirm) {
+            error.textContent = "Invalid input or passwords do not match";
+            error.classList.add("show");
+            return;
         }
 
-        // Password strength checker
-        const passwordInput = document.getElementById('password');
-        const passwordStrength = document.getElementById('passwordStrength');
-        const confirmPasswordInput = document.getElementById('confirmPassword');
-
-        passwordInput.addEventListener('input', function() {
-            const password = this.value;
-            let strength = '';
-            let strengthClass = '';
-
-            if (password.length === 0) {
-                strength = '';
-            } else if (password.length < 6) {
-                strength = 'Weak - At least 6 characters required';
-                strengthClass = 'weak';
-            } else if (password.length < 10) {
-                strength = 'Medium - Consider using more characters';
-                strengthClass = 'medium';
-            } else {
-                strength = 'Strong password';
-                strengthClass = 'strong';
+        fetch(API_BASE + "/api/admin/setup", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ username, password })
+        })
+        .then(function(res) {
+            if (res.status === 403) {
+                return res.json().then(function(data) {
+                    error.textContent = data.message || "Admin already configured. Please use the login page.";
+                    error.classList.add("show");
+                });
             }
-
-            passwordStrength.textContent = strength;
-            passwordStrength.className = 'password-strength ' + strengthClass;
+            return res.json().then(function() {
+                success.classList.add("show");
+                setTimeout(function() { window.location.href = "login.html"; }, 1500);
+            });
+        })
+        .catch(function() {
+            error.textContent = "Setup failed. Server may be unreachable.";
+            error.classList.add("show");
         });
-
-        // Form submission
-        document.getElementById('setupForm').addEventListener('submit', function(e) {
-            e.preventDefault();
-            
-            const username = document.getElementById('username').value.trim();
-            const password = document.getElementById('password').value;
-            const confirmPassword = document.getElementById('confirmPassword').value;
-            const errorMessage = document.getElementById('errorMessage');
-            const successMessage = document.getElementById('successMessage');
-            const setupBtn = document.getElementById('setupBtn');
-
-            // Reset messages
-            errorMessage.classList.remove('show');
-            successMessage.classList.remove('show');
-
-            // Validation
-            if (!username || !password || !confirmPassword) {
-                errorMessage.textContent = 'Please fill all fields.';
-                errorMessage.classList.add('show');
-                return;
-            }
-
-            if (password.length < 6) {
-                errorMessage.textContent = 'Password must be at least 6 characters long.';
-                errorMessage.classList.add('show');
-                return;
-            }
-
-            if (password !== confirmPassword) {
-                errorMessage.textContent = 'Passwords do not match.';
-                errorMessage.classList.add('show');
-                return;
-            }
-
-            // Hash password (simple encryption using btoa + salt)
-            const salt = 'hashone_careers_' + Date.now();
-            const passwordHash = btoa(username + ':' + password + ':' + salt);
-
-            // Store credentials
-            const credentials = {
-                username: username,
-                passwordHash: passwordHash,
-                salt: salt,
-                createdAt: new Date().toISOString()
-            };
-
-            localStorage.setItem('hashoneAdminCredentials', JSON.stringify(credentials));
-
-            // Show success message
-            successMessage.classList.add('show');
-            setupBtn.disabled = true;
-            setupBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Saving...';
-
-            // Redirect to login after 2 seconds
-            setTimeout(() => {
-                window.location.href = 'login.html';
-            }, 2000);
-        });
-
-        // Check password match on confirm password input
-        confirmPasswordInput.addEventListener('input', function() {
-            const password = passwordInput.value;
-            const confirmPassword = this.value;
-            const errorMessage = document.getElementById('errorMessage');
-
-            if (confirmPassword && password !== confirmPassword) {
-                errorMessage.textContent = 'Passwords do not match.';
-                errorMessage.classList.add('show');
-            } else {
-                errorMessage.classList.remove('show');
-            }
-        });
+    });
     </script>
 </body>
 </html>

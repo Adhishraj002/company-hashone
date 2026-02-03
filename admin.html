@@ -10,528 +10,6 @@
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
-    <style>
-        body {
-            background: var(--bg-light);
-            min-height: 100vh;
-        }
-
-        .admin-navbar {
-            background: white;
-            border-bottom: 2px solid var(--primary-color);
-            padding: 1rem 0;
-            box-shadow: var(--shadow-sm);
-            position: sticky;
-            top: 0;
-            z-index: 1000;
-        }
-
-        .admin-navbar .container {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-        }
-
-        .admin-navbar .logo img {
-            height: 50px;
-            width: auto;
-            max-width: 180px;
-        }
-
-        .admin-navbar .admin-user {
-            display: flex;
-            align-items: center;
-            gap: 1rem;
-        }
-
-        .admin-user-info {
-            display: flex;
-            align-items: center;
-            gap: 0.75rem;
-        }
-
-        .admin-avatar {
-            width: 40px;
-            height: 40px;
-            background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            color: white;
-            font-weight: 600;
-        }
-
-        .admin-user-info span {
-            font-weight: 600;
-            color: var(--text-dark);
-        }
-
-        .logout-btn {
-            padding: 0.75rem 1.5rem;
-            background: var(--primary-color);
-            color: white;
-            border: none;
-            border-radius: 8px;
-            cursor: pointer;
-            font-weight: 600;
-            transition: all 0.3s ease;
-            display: flex;
-            align-items: center;
-            gap: 0.5rem;
-        }
-
-        .logout-btn:hover {
-            background: var(--primary-dark);
-            transform: translateY(-2px);
-        }
-
-        .admin-content {
-            padding: 3rem 0;
-        }
-
-        .admin-header {
-            text-align: center;
-            margin-bottom: 3rem;
-        }
-
-        .admin-header h1 {
-            font-size: 2.5rem;
-            color: var(--text-dark);
-            margin-bottom: 0.5rem;
-        }
-
-        .admin-header p {
-            color: var(--text-light);
-            font-size: 1.125rem;
-        }
-
-        .admin-stats {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-            gap: 2rem;
-            margin-bottom: 3rem;
-        }
-
-        .stat-card {
-            background: white;
-            padding: 2rem;
-            border-radius: 16px;
-            box-shadow: var(--shadow-md);
-            text-align: center;
-            transition: all 0.3s ease;
-            border-left: 4px solid var(--primary-color);
-        }
-
-        .stat-card:hover {
-            transform: translateY(-5px);
-            box-shadow: var(--shadow-xl);
-        }
-
-        .stat-card i {
-            font-size: 2.5rem;
-            color: var(--primary-color);
-            margin-bottom: 1rem;
-        }
-
-        .stat-card h3 {
-            font-size: 2rem;
-            font-weight: 700;
-            color: var(--text-dark);
-            margin-bottom: 0.5rem;
-        }
-
-        .stat-card p {
-            color: var(--text-light);
-            font-weight: 500;
-        }
-
-        .admin-panel {
-            background: white;
-            padding: 2.5rem;
-            border-radius: 20px;
-            box-shadow: var(--shadow-lg);
-            margin-bottom: 3rem;
-        }
-
-        .panel-header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-bottom: 2rem;
-            padding-bottom: 1.5rem;
-            border-bottom: 2px solid var(--border-color);
-        }
-
-        .panel-header h2 {
-            font-size: 1.75rem;
-            color: var(--text-dark);
-            display: flex;
-            align-items: center;
-            gap: 0.75rem;
-        }
-
-        .panel-header h2 i {
-            color: var(--primary-color);
-        }
-
-        .add-job-btn {
-            padding: 0.875rem 1.5rem;
-            background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
-            color: white;
-            border: none;
-            border-radius: 10px;
-            cursor: pointer;
-            font-weight: 600;
-            transition: all 0.3s ease;
-            display: flex;
-            align-items: center;
-            gap: 0.5rem;
-        }
-
-        .add-job-btn:hover {
-            transform: translateY(-2px);
-            box-shadow: var(--shadow-md);
-        }
-
-        .admin-form {
-            display: grid;
-            gap: 1.5rem;
-        }
-
-        .form-row {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-            gap: 1.5rem;
-        }
-
-        .jobs-list {
-            margin-top: 3rem;
-        }
-
-        .jobs-list h3 {
-            font-size: 1.5rem;
-            color: var(--text-dark);
-            margin-bottom: 2rem;
-            display: flex;
-            align-items: center;
-            gap: 0.75rem;
-        }
-
-        .jobs-list h3 i {
-            color: var(--primary-color);
-        }
-
-        .jobs-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
-            gap: 2rem;
-        }
-
-        .job-card-admin {
-            background: var(--bg-light);
-            padding: 2rem;
-            border-radius: 16px;
-            border: 2px solid var(--border-color);
-            transition: all 0.3s ease;
-        }
-
-        .job-card-admin:hover {
-            border-color: var(--primary-color);
-            box-shadow: var(--shadow-md);
-            transform: translateY(-3px);
-        }
-
-        .job-card-admin .job-title {
-            font-size: 1.25rem;
-            font-weight: 600;
-            color: var(--text-dark);
-            margin-bottom: 1rem;
-        }
-
-        .job-card-admin .job-meta {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 1rem;
-            margin-bottom: 1rem;
-            font-size: 0.9rem;
-            color: var(--text-light);
-        }
-
-        .job-card-admin .job-meta span {
-            display: flex;
-            align-items: center;
-            gap: 0.5rem;
-        }
-
-        .job-card-admin .job-meta i {
-            color: var(--primary-color);
-        }
-
-        .job-card-admin .job-description {
-            color: var(--text-light);
-            line-height: 1.6;
-            margin-bottom: 1.5rem;
-            font-size: 0.95rem;
-        }
-
-        .job-actions {
-            display: flex;
-            gap: 0.75rem;
-        }
-
-        .btn-edit-admin,
-        .btn-delete-admin {
-            flex: 1;
-            padding: 0.75rem;
-            border: none;
-            border-radius: 8px;
-            cursor: pointer;
-            font-weight: 600;
-            transition: all 0.3s ease;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 0.5rem;
-        }
-
-        .btn-edit-admin {
-            background: var(--secondary-color);
-            color: white;
-        }
-
-        .btn-edit-admin:hover {
-            background: #2563eb;
-            transform: translateY(-2px);
-        }
-
-        .btn-delete-admin {
-            background: #ef4444;
-            color: white;
-        }
-
-        .btn-delete-admin:hover {
-            background: #dc2626;
-            transform: translateY(-2px);
-        }
-
-        .empty-state {
-            text-align: center;
-            padding: 4rem 2rem;
-            color: var(--text-light);
-        }
-
-        .empty-state i {
-            font-size: 4rem;
-            color: var(--border-color);
-            margin-bottom: 1rem;
-        }
-
-        .empty-state p {
-            font-size: 1.125rem;
-        }
-
-        /* Tabs */
-        .admin-tabs {
-            display: flex;
-            gap: 0.5rem;
-            margin-bottom: 2rem;
-            border-bottom: 2px solid var(--border-color);
-            overflow-x: auto;
-            flex-wrap: wrap;
-        }
-
-        .admin-tab {
-            padding: 1rem 1.5rem;
-            background: transparent;
-            border: none;
-            border-bottom: 3px solid transparent;
-            cursor: pointer;
-            font-weight: 600;
-            color: var(--text-light);
-            transition: all 0.3s ease;
-            display: flex;
-            align-items: center;
-            gap: 0.5rem;
-            white-space: nowrap;
-        }
-
-        .admin-tab:hover {
-            color: var(--primary-color);
-            background: rgba(31, 47, 79, 0.05);
-        }
-
-        .admin-tab.active {
-            color: var(--primary-color);
-            border-bottom-color: var(--primary-color);
-            background: rgba(31, 47, 79, 0.05);
-        }
-
-        .admin-tab i {
-            font-size: 1.1rem;
-        }
-
-        .tab-content {
-            display: none;
-        }
-
-        .tab-content.active {
-            display: block;
-            animation: fadeIn 0.3s ease;
-        }
-
-        @keyframes fadeIn {
-            from {
-                opacity: 0;
-                transform: translateY(10px);
-            }
-            to {
-                opacity: 1;
-                transform: translateY(0);
-            }
-        }
-
-        /* Image Upload */
-        .image-upload-container {
-            position: relative;
-            margin-bottom: 1rem;
-        }
-
-        .image-preview {
-            width: 150px;
-            height: 150px;
-            border-radius: 12px;
-            object-fit: cover;
-            border: 2px solid var(--border-color);
-            display: none;
-            margin-bottom: 1rem;
-        }
-
-        .image-preview.show {
-            display: block;
-        }
-
-        .file-input-wrapper {
-            position: relative;
-            display: inline-block;
-            width: 100%;
-        }
-
-        .file-input-wrapper input[type="file"] {
-            position: absolute;
-            opacity: 0;
-            width: 100%;
-            height: 100%;
-            cursor: pointer;
-        }
-
-        .file-input-label {
-            display: inline-flex;
-            align-items: center;
-            gap: 0.5rem;
-            padding: 0.875rem 1.5rem;
-            background: var(--bg-light);
-            border: 2px dashed var(--border-color);
-            border-radius: 10px;
-            cursor: pointer;
-            transition: all 0.3s ease;
-            width: 100%;
-            justify-content: center;
-        }
-
-        .file-input-label:hover {
-            border-color: var(--primary-color);
-            background: rgba(31, 47, 79, 0.05);
-        }
-
-        .team-member-card {
-            background: var(--bg-light);
-            padding: 1.5rem;
-            border-radius: 12px;
-            border: 2px solid var(--border-color);
-            margin-bottom: 1rem;
-        }
-
-        .team-member-card img {
-            width: 80px;
-            height: 80px;
-            border-radius: 50%;
-            object-fit: cover;
-            margin-bottom: 1rem;
-        }
-
-        .notification {
-            position: fixed;
-            top: 100px;
-            right: 20px;
-            padding: 1rem 1.5rem;
-            border-radius: 10px;
-            box-shadow: var(--shadow-lg);
-            z-index: 10000;
-            display: none;
-            animation: slideInRight 0.3s ease;
-        }
-
-        .notification.show {
-            display: block;
-        }
-
-        .notification.success {
-            background: #d1fae5;
-            color: #065f46;
-            border-left: 4px solid #10b981;
-        }
-
-        .notification.error {
-            background: #fee2e2;
-            color: #dc2626;
-            border-left: 4px solid #ef4444;
-        }
-
-        @keyframes slideInRight {
-            from {
-                transform: translateX(100%);
-                opacity: 0;
-            }
-            to {
-                transform: translateX(0);
-                opacity: 1;
-            }
-        }
-
-        @media (max-width: 768px) {
-            .admin-navbar .admin-user {
-                flex-direction: column;
-                gap: 0.5rem;
-            }
-
-            .admin-stats {
-                grid-template-columns: 1fr;
-            }
-
-            .form-row {
-                grid-template-columns: 1fr;
-            }
-
-            .jobs-grid {
-                grid-template-columns: 1fr;
-            }
-
-            .admin-tabs {
-                flex-direction: column;
-            }
-
-            .admin-tab {
-                border-bottom: 2px solid var(--border-color);
-                border-left: 3px solid transparent;
-            }
-
-            .admin-tab.active {
-                border-left-color: var(--primary-color);
-                border-bottom-color: var(--border-color);
-            }
-        }
-    </style>
 </head>
 <body>
     <nav class="admin-navbar">
@@ -615,7 +93,7 @@
                     </button>
                 </div>
 
-                <form id="jobForm" class="admin-form" style="display: none;">
+                <form id="jobForm" class="admin-form admin-form-hidden">
                     <input type="hidden" id="jobId">
                     
                     <div class="form-row">
@@ -855,7 +333,7 @@
                         <i class="fas fa-plus"></i> Add Team Member
                     </button>
                 </div>
-                <form id="teamForm" class="admin-form" style="display: none;">
+                <form id="teamForm" class="admin-form admin-form-hidden">
                     <input type="hidden" id="teamMemberId">
                     <div class="form-group">
                         <label>Member Photo</label>
@@ -888,7 +366,7 @@
                         <button type="button" class="btn btn-secondary" onclick="resetTeamForm()"><i class="fas fa-times"></i> Cancel</button>
                     </div>
                 </form>
-                <div id="teamMembersList" style="margin-top: 2rem;">
+                <div id="teamMembersList" class="admin-team-list">
                     <!-- Team members will be loaded here -->
                 </div>
             </div>
@@ -899,21 +377,32 @@
     <!-- Notification -->
     <div id="notification" class="notification"></div>
 
+    <script src="config.js"></script>
     <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
     <script>
-        AOS.init({
-            duration: 1000,
-            once: true
-        });
+        var API_BASE = (typeof window !== "undefined" && window.API_BASE_URL) ? window.API_BASE_URL : "http://localhost:3000";
 
-        // Check authentication using backend token
-        const token = localStorage.getItem("adminToken");
+        // Redirect only if no token; otherwise show dashboard and verify in background
+        var token = localStorage.getItem("adminToken");
         if (!token) {
             window.location.href = "login.html";
+        } else {
+            document.getElementById("adminUsername").textContent = "Admin";
+            // Verify token in background so dashboard shows immediately
+            fetch(API_BASE + "/api/admin/me", { headers: { "Authorization": "Bearer " + token } })
+                .then(function(res) {
+                    if (!res.ok) {
+                        localStorage.removeItem("adminToken");
+                        window.location.href = "login.html";
+                    }
+                })
+                .catch(function() {
+                    // Backend may be offline; keep user on page, they can retry
+                    console.warn("Could not verify token. Ensure backend is running.");
+                });
         }
 
-        // Admin display name (static for now)
-        document.getElementById('adminUsername').textContent = 'Admin';
+        if (typeof AOS !== "undefined") AOS.init({ duration: 400, once: true, offset: 0 });
 
 
 
@@ -987,16 +476,14 @@
 
   
         function loadJobs() {
-            fetch("http://localhost:3000/jobs")
+            fetch(API_BASE + "/api/jobs")
             .then(res => res.json())
             .then(data => {
                 jobs = data;
                 renderJobs();
                 updateStats();
             })
-            .catch(err => {
-                console.error("Failed to load jobs", err);
-            });
+            .catch(err => console.error("Failed to load jobs", err));
         }
 
 
@@ -1068,9 +555,10 @@
             const addBtn = document.getElementById('addJobBtn');
             
             resetForm();
-            form.style.display = 'grid';
+            form.classList.remove('admin-form-hidden');
+            form.classList.add('admin-form-visible');
             panelTitle.textContent = 'Add New Job Role';
-            addBtn.style.display = 'none';
+            addBtn.classList.add('admin-btn-hidden');
             form.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
         }
 
@@ -1081,9 +569,10 @@
             const panelTitle = document.getElementById('panelTitle');
             const addBtn = document.getElementById('addJobBtn');
             
-            form.style.display = 'none';
+            form.classList.add('admin-form-hidden');
+            form.classList.remove('admin-form-visible');
             panelTitle.textContent = 'Manage Job Roles';
-            addBtn.style.display = 'flex';
+            addBtn.classList.remove('admin-btn-hidden');
         }
 
         function editJob(id) {
@@ -1101,9 +590,10 @@
                 const panelTitle = document.getElementById('panelTitle');
                 const addBtn = document.getElementById('addJobBtn');
                 
-                form.style.display = 'grid';
+                form.classList.remove('admin-form-hidden');
+                form.classList.add('admin-form-visible');
                 panelTitle.textContent = 'Edit Job Role';
-                addBtn.style.display = 'none';
+                addBtn.classList.add('admin-btn-hidden');
                 form.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
             }
         }
@@ -1111,11 +601,9 @@
         function deleteJob(id) {
             if (!confirm("Are you sure you want to delete this job posting?")) return;
 
-            fetch(`http://localhost:3000/jobs/${id}`, {
+            fetch(API_BASE + "/api/jobs/" + id, {
                 method: "DELETE",
-                headers: {
-                    "Authorization": "Bearer " + localStorage.getItem("adminToken")
-                }
+                headers: { "Authorization": "Bearer " + localStorage.getItem("adminToken") }
             })
             .then(() => {
                 loadJobs();
@@ -1148,10 +636,7 @@
             };
 
             const method = jobId ? "PUT" : "POST";
-            const url = jobId
-            ? `http://localhost:3000/jobs/${jobId}`
-            : "http://localhost:3000/jobs";
-
+            const url = jobId ? API_BASE + "/api/jobs/" + jobId : API_BASE + "/api/jobs";
             fetch(url, {
                 method,
                 headers: {
@@ -1160,31 +645,31 @@
                 },
                 body: JSON.stringify(jobData)
             })
+            .then(res => {
+                if (!res.ok) throw new Error("Save failed");
+                return res.json();
+            })
             .then(() => {
                 resetForm();
                 loadJobs();
                 showNotification("Job saved successfully!");
             })
-            .catch(() => {
-                showNotification("Failed to save job", "error");
+            .catch(err => {
+                showNotification("Job NOT saved (auth or server error)", "error");
+                console.error(err);
+            })
             });
 
-
-            // Show success message
-            showNotification('Job saved successfully!');
-        });
-
-        // Team Members Management
+        // Team Members (from backend)
         function loadTeamMembers() {
-            const saved = localStorage.getItem('hashoneTeamMembers');
-            if (saved) {
-                teamMembers = JSON.parse(saved);
-            }
-            renderTeamMembers();
-        }
-
-        function saveTeamMembers() {
-            localStorage.setItem('hashoneTeamMembers', JSON.stringify(teamMembers));
+            fetch(API_BASE + "/api/team-members", { headers: {} })
+                .then(res => res.json())
+                .then(data => {
+                    teamMembers = data || [];
+                    renderTeamMembers();
+                    updateStats();
+                })
+                .catch(() => { teamMembers = []; renderTeamMembers(); updateStats(); });
         }
 
         function renderTeamMembers() {
@@ -1231,7 +716,8 @@
         }
 
         function showAddTeamForm() {
-            document.getElementById('teamForm').style.display = 'grid';
+            document.getElementById('teamForm').classList.remove('admin-form-hidden');
+            document.getElementById('teamForm').classList.add('admin-form-visible');
             resetTeamForm();
         }
 
@@ -1252,109 +738,100 @@
                     document.getElementById('teamPhotoPreview').src = member.photo;
                     document.getElementById('teamPhotoPreview').classList.add('show');
                 }
-                document.getElementById('teamForm').style.display = 'grid';
+                document.getElementById('teamForm').classList.remove('admin-form-hidden');
+                document.getElementById('teamForm').classList.add('admin-form-visible');
                 document.getElementById('teamForm').scrollIntoView({ behavior: 'smooth' });
             }
         }
 
         function deleteTeamMember(id) {
-            if (confirm('Are you sure you want to delete this team member?')) {
-                teamMembers = teamMembers.filter(m => m.id !== id);
-                saveTeamMembers();
-                renderTeamMembers();
-                updateStats();
+            if (!confirm('Are you sure you want to delete this team member?')) return;
+            fetch(API_BASE + "/api/team-members/" + id, {
+                method: "DELETE",
+                headers: { "Authorization": "Bearer " + localStorage.getItem("adminToken") }
+            })
+            .then(res => {
+                if (!res.ok) throw new Error("Delete failed");
+                loadTeamMembers();
                 showNotification('Team member deleted successfully');
-            }
+            })
+            .catch(() => showNotification('Delete failed', 'error'));
         }
 
-        // Content Management Functions
+        // Content (from backend)
         function loadHomeContent() {
-            const saved = localStorage.getItem('hashoneContent');
-            if (saved) {
-                websiteContent = JSON.parse(saved);
-            }
-            if (websiteContent.home) {
-                document.getElementById('heroTitle').value = websiteContent.home.heroTitle || '';
-                document.getElementById('heroSubtitle').value = websiteContent.home.heroSubtitle || '';
-                document.getElementById('statClients').value = websiteContent.home.statClients || '';
-                document.getElementById('statPlacements').value = websiteContent.home.statPlacements || '';
-                document.getElementById('statExperience').value = websiteContent.home.statExperience || '';
-            }
+            fetch(API_BASE + "/api/site-content").then(r => r.json()).then(sections => {
+                const home = sections.home || {};
+                document.getElementById('heroTitle').value = home.heroTitle || '';
+                document.getElementById('heroSubtitle').value = home.heroSubtitle || '';
+                document.getElementById('statClients').value = home.statClients ?? '';
+                document.getElementById('statPlacements').value = home.statPlacements ?? '';
+                document.getElementById('statExperience').value = home.statExperience ?? '';
+            }).catch(() => {});
         }
 
         function loadAboutContent() {
-            const saved = localStorage.getItem('hashoneContent');
-            if (saved) {
-                websiteContent = JSON.parse(saved);
-            }
-            if (websiteContent.about) {
-                document.getElementById('aboutEstablished').value = websiteContent.about.established || '';
-                document.getElementById('aboutTeamCount').value = websiteContent.about.teamCount || '';
-                document.getElementById('aboutClientsCount').value = websiteContent.about.clientsCount || '';
-                document.getElementById('aboutMission').value = websiteContent.about.mission || '';
-                document.getElementById('founder1Name').value = websiteContent.about.founder1Name || '';
-                document.getElementById('founder1Role').value = websiteContent.about.founder1Role || '';
-                document.getElementById('founder1Bio').value = websiteContent.about.founder1Bio || '';
-                document.getElementById('founder2Name').value = websiteContent.about.founder2Name || '';
-                document.getElementById('founder2Role').value = websiteContent.about.founder2Role || '';
-                document.getElementById('founder2Bio').value = websiteContent.about.founder2Bio || '';
-
-                // Load founder photos into previews
+            fetch(API_BASE + "/api/site-content").then(r => r.json()).then(sections => {
+                const about = sections.about || {};
+                document.getElementById('aboutEstablished').value = about.established || '';
+                document.getElementById('aboutTeamCount').value = about.teamCount ?? '';
+                document.getElementById('aboutClientsCount').value = about.clientsCount ?? '';
+                document.getElementById('aboutMission').value = about.mission || '';
+                document.getElementById('founder1Name').value = about.founder1Name || '';
+                document.getElementById('founder1Role').value = about.founder1Role || '';
+                document.getElementById('founder1Bio').value = about.founder1Bio || '';
+                document.getElementById('founder2Name').value = about.founder2Name || '';
+                document.getElementById('founder2Role').value = about.founder2Role || '';
+                document.getElementById('founder2Bio').value = about.founder2Bio || '';
                 const f1Prev = document.getElementById('founder1PhotoPreview');
                 const f2Prev = document.getElementById('founder2PhotoPreview');
-                if (f1Prev && websiteContent.about.founder1Photo) {
-                    f1Prev.src = websiteContent.about.founder1Photo;
-                    f1Prev.classList.add('show');
-                }
-                if (f2Prev && websiteContent.about.founder2Photo) {
-                    f2Prev.src = websiteContent.about.founder2Photo;
-                    f2Prev.classList.add('show');
-                }
-            }
+                if (f1Prev && about.founder1Photo) { f1Prev.src = about.founder1Photo; f1Prev.classList.add('show'); }
+                if (f2Prev && about.founder2Photo) { f2Prev.src = about.founder2Photo; f2Prev.classList.add('show'); }
+            }).catch(() => {});
         }
 
         function loadContactContent() {
-            const saved = localStorage.getItem('hashoneContent');
-            if (saved) {
-                websiteContent = JSON.parse(saved);
-            }
-            if (websiteContent.contact) {
-                document.getElementById('contactAddress').value = websiteContent.contact.address || '';
-                document.getElementById('contactPhone').value = websiteContent.contact.phone || '';
-                document.getElementById('contactEmail').value = websiteContent.contact.email || '';
-                document.getElementById('contactHours').value = websiteContent.contact.hours || '';
-                document.getElementById('contactGST').value = websiteContent.contact.gst || '';
-                document.getElementById('contactLinkedIn').value = websiteContent.contact.linkedin || '';
-                document.getElementById('contactInstagram').value = websiteContent.contact.instagram || '';
-            }
+            fetch(API_BASE + "/api/site-content").then(r => r.json()).then(sections => {
+                const contact = sections.contact || {};
+                document.getElementById('contactAddress').value = contact.address || '';
+                document.getElementById('contactPhone').value = contact.phone || '';
+                document.getElementById('contactEmail').value = contact.email || '';
+                document.getElementById('contactHours').value = contact.hours || '';
+                document.getElementById('contactGST').value = contact.gst || '';
+                document.getElementById('contactLinkedIn').value = contact.linkedin || '';
+                document.getElementById('contactInstagram').value = contact.instagram || '';
+            }).catch(() => {});
         }
 
         function loadServices() {
-            const saved = localStorage.getItem('hashoneContent');
-            if (saved) {
-                websiteContent = JSON.parse(saved);
-            }
-            // Services editing can be added later if needed
             const container = document.getElementById('servicesList');
-            container.innerHTML = '<p style="color: var(--text-light);">Services content editing coming soon. For now, services are managed in the main HTML file.</p>';
+            container.innerHTML = '<p style="color: var(--text-light);">Services content is managed in the main site. Editable services can be added later.</p>';
         }
 
-        function saveContent() {
-            localStorage.setItem('hashoneContent', JSON.stringify(websiteContent));
+        function saveSiteContent(section, data) {
+            return fetch(API_BASE + "/api/site-content", {
+                method: "PUT",
+                headers: {
+                    "Content-Type": "application/json",
+                    "Authorization": "Bearer " + localStorage.getItem("adminToken")
+                },
+                body: JSON.stringify({ section: section, data: data })
+            });
         }
 
-        // Form submissions
         document.getElementById('homeForm').addEventListener('submit', function(e) {
             e.preventDefault();
-            websiteContent.home = {
+            const data = {
                 heroTitle: document.getElementById('heroTitle').value,
                 heroSubtitle: document.getElementById('heroSubtitle').value,
                 statClients: document.getElementById('statClients').value,
                 statPlacements: document.getElementById('statPlacements').value,
                 statExperience: document.getElementById('statExperience').value
             };
-            saveContent();
-            showNotification('Home content saved successfully!');
+            saveSiteContent('home', data).then(res => {
+                if (res.ok) showNotification('Home content saved!');
+                else showNotification('Save failed', 'error');
+            }).catch(() => showNotification('Save failed', 'error'));
         });
 
         document.getElementById('aboutForm').addEventListener('submit', function(e) {
@@ -1370,40 +847,33 @@
                 founder2Name: document.getElementById('founder2Name').value,
                 founder2Role: document.getElementById('founder2Role').value,
                 founder2Bio: document.getElementById('founder2Bio').value,
-                // keep existing photos unless new upload
-                founder1Photo: websiteContent.about?.founder1Photo || '',
-                founder2Photo: websiteContent.about?.founder2Photo || ''
+                founder1Photo: (function(){ var s = document.getElementById('founder1PhotoPreview').src || ''; return s.indexOf('data:') === 0 ? s : ''; })(),
+                founder2Photo: (function(){ var s = document.getElementById('founder2PhotoPreview').src || ''; return s.indexOf('data:') === 0 ? s : ''; })()
             };
-
             const f1Input = document.getElementById('founder1PhotoInput');
             const f2Input = document.getElementById('founder2PhotoInput');
-
             const readFileAsBase64 = (file) => new Promise((resolve) => {
                 if (!file) return resolve('');
                 const reader = new FileReader();
                 reader.onload = (e) => resolve(e.target.result);
                 reader.readAsDataURL(file);
             });
-
             Promise.all([
-                readFileAsBase64(f1Input && f1Input.files ? f1Input.files[0] : null),
-                readFileAsBase64(f2Input && f2Input.files ? f2Input.files[0] : null)
+                readFileAsBase64(f1Input && f1Input.files && f1Input.files[0] ? f1Input.files[0] : null),
+                readFileAsBase64(f2Input && f2Input.files && f2Input.files[0] ? f2Input.files[0] : null)
             ]).then(([f1b64, f2b64]) => {
                 if (f1b64) aboutDraft.founder1Photo = f1b64;
                 if (f2b64) aboutDraft.founder2Photo = f2b64;
-                websiteContent.about = aboutDraft;
-                saveContent();
-                showNotification('About content saved successfully!');
-            }).catch(() => {
-                websiteContent.about = aboutDraft;
-                saveContent();
-                showNotification('About content saved (photos not updated).', 'error');
+                saveSiteContent('about', aboutDraft).then(res => {
+                    if (res.ok) showNotification('About content saved!');
+                    else showNotification('Save failed', 'error');
+                }).catch(() => showNotification('Save failed', 'error'));
             });
         });
 
         document.getElementById('contactForm').addEventListener('submit', function(e) {
             e.preventDefault();
-            websiteContent.contact = {
+            const data = {
                 address: document.getElementById('contactAddress').value,
                 phone: document.getElementById('contactPhone').value,
                 email: document.getElementById('contactEmail').value,
@@ -1412,8 +882,10 @@
                 linkedin: document.getElementById('contactLinkedIn').value,
                 instagram: document.getElementById('contactInstagram').value
             };
-            saveContent();
-            showNotification('Contact information saved successfully!');
+            saveSiteContent('contact', data).then(res => {
+                if (res.ok) showNotification('Contact info saved!');
+                else showNotification('Save failed', 'error');
+            }).catch(() => showNotification('Save failed', 'error'));
         });
 
         document.getElementById('teamForm').addEventListener('submit', function(e) {
@@ -1441,25 +913,46 @@
                 name: document.getElementById('teamName').value,
                 role: document.getElementById('teamRole').value,
                 bio: document.getElementById('teamBio').value,
-                photo: photoBase64
+                photo: photoBase64 || ''
             };
 
             if (memberId) {
-                const index = teamMembers.findIndex(m => m.id === parseInt(memberId));
-                if (index !== -1) {
-                    teamMembers[index] = { ...teamMembers[index], ...memberData };
-                }
+                fetch(API_BASE + "/api/team-members/" + memberId, {
+                    method: "PUT",
+                    headers: {
+                        "Content-Type": "application/json",
+                        "Authorization": "Bearer " + localStorage.getItem("adminToken")
+                    },
+                    body: JSON.stringify(memberData)
+                })
+                .then(res => {
+                    if (!res.ok) throw new Error();
+                    loadTeamMembers();
+resetTeamForm();
+            document.getElementById('teamForm').classList.add('admin-form-hidden');
+            document.getElementById('teamForm').classList.remove('admin-form-visible');
+            showNotification('Team member updated!');
+                })
+                .catch(() => showNotification('Update failed', 'error'));
             } else {
-                const newId = teamMembers.length > 0 ? Math.max(...teamMembers.map(m => m.id)) + 1 : 1;
-                teamMembers.push({ id: newId, ...memberData });
+                fetch(API_BASE + "/api/team-members", {
+                    method: "POST",
+                    headers: {
+                        "Content-Type": "application/json",
+                        "Authorization": "Bearer " + localStorage.getItem("adminToken")
+                    },
+                    body: JSON.stringify(memberData)
+                })
+                .then(res => res.json())
+                .then(() => {
+                    loadTeamMembers();
+                    resetTeamForm();
+                    document.getElementById('teamForm').classList.add('admin-form-hidden');
+                    document.getElementById('teamForm').classList.remove('admin-form-visible');
+                    showNotification('Team member added!');
+                })
+                .catch(() => showNotification('Add failed', 'error'));
             }
-
-            saveTeamMembers();
-            renderTeamMembers();
-            updateStats();
-            resetTeamForm();
-            document.getElementById('teamForm').style.display = 'none';
-            showNotification('Team member saved successfully!');
         }
 
         // Load jobs on page load
@@ -1468,4 +961,3 @@
     </script>
 </body>
 </html>
-
