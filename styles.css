@@ -3689,6 +3689,22 @@ body:has(.admin-navbar) {
     font-size: 1.3rem;
   }
 
+  /* ---------- ABOUT / TEAM ---------- */
+  .founder-item--horizontal {
+    grid-template-columns: 1fr;
+    text-align: center;
+  }
+
+  .founder-avatar--photo {
+    width: 120px;
+    height: 120px;
+  }
+
+  .team-grid {
+    grid-template-columns: repeat(2, 2fr);
+    gap: 1.2rem;
+  }
+
   /* ---------- CONTACT ---------- */
   .contact-main-grid {
     grid-template-columns: 1fr;
