@@ -1278,47 +1278,57 @@ section {
 
 /* About: team & company culture */
 #about .page-header {
-    background:
-      linear-gradient(
-        90deg,
-        rgba(31,47,79,0.95) 35%,
-        rgba(31,47,79,0.75) 60%,
-        rgba(31,47,79,0.35) 100%
-      ),
-      url("https://images.unsplash.com/photo-1552664730-307053f3a2e8?auto=format&fit=crop&w=1920&q=80");
+    margin-top: 70px;
+  padding: 3.5rem 0;
 
-    background-size: cover;
-    background-position: center;
+  background:
+    linear-gradient(
+      90deg,
+      rgba(31,47,79,0.92) 45%,
+      rgba(31,47,79,0.6) 75%,
+      rgba(31,47,79,0.2) 100%
+    ),
+    url("https://images.unsplash.com/photo-1542744173-8e7e53415bb0?auto=format&fit=crop&w=1920&q=80");
+
+  background-size: cover;
+  background-position: center;
+  color: white;
 }
 
 /* Services: recruitment & professional services */
 #services .page-header {
-    background:
-      linear-gradient(
-        90deg,
-        rgba(31,47,79,0.95) 35%,
-        rgba(31,47,79,0.75) 60%,
-        rgba(31,47,79,0.35) 100%
-      ),
-      url("https://images.unsplash.com/photo-1573497019940-1c28c88b4f3e?auto=format&fit=crop&w=1920&q=80");
+    margin-top: 70px;
+  padding: 3.5rem 0;
 
-    background-size: cover;
-    background-position: center;
+  background:
+    linear-gradient(
+      90deg,
+      rgba(31,47,79,0.92) 45%,
+      rgba(31,47,79,0.6) 75%,
+      rgba(31,47,79,0.2) 100%
+    ),
+    url("https://images.unsplash.com/photo-1521791136064-7986c2920216?auto=format&fit=crop&w=1920&q=80");
+
+  background-size: cover;
+  background-position: center;
+  color: white;
 }
 
 /* Roles: careers & open positions */
 #roles .page-header {
+    margin-top: 70px;
+    padding: 3.5rem 0;
     background:
-      linear-gradient(
-        90deg,
-        rgba(31,47,79,0.95) 35%,
-        rgba(31,47,79,0.75) 60%,
-        rgba(31,47,79,0.35) 100%
-      ),
-      url("https://images.unsplash.com/photo-1586281380349-632531db7b4f?auto=format&fit=crop&w=1920&q=80");
-
+    linear-gradient(
+    90deg,
+    rgba(31,47,79,0.92) 45%,
+    rgba(31,47,79,0.6) 75%,
+    rgba(31,47,79,0.2) 100%
+    ),
+    url("https://images.unsplash.com/photo-1504384308090-c894fdcc538d?auto=format&fit=crop&w=1920&q=80");
     background-size: cover;
     background-position: center;
+    color: white;
 }
 
 @media (max-width: 768px) {

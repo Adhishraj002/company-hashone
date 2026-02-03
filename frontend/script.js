@@ -1,5 +1,5 @@
 /* ================= CONFIG ================= */
-const API_BASE = typeof window !== "undefined" && window.API_BASE_URL ? window.API_BASE_URL : "http://localhost:3000";
+const API_BASE = typeof window !== "undefined" && window.API_BASE_URL ? window.API_BASE_URL : "https://company-hashone.onrender.com";
 
 // Page Navigation System
 function showPage(pageId) {
@@ -400,4 +400,23 @@ document.querySelectorAll(".read-more-btn").forEach((btn) => {
       this.textContent = "Hide Benefits";
     }
   });
+
+  window.addEventListener("load", () => {
+  const hash = window.location.hash.replace("#", "");
+  if (!hash) return;
+
+  document.querySelectorAll(".page-section").forEach(sec => {
+    sec.classList.remove("active");
+  });
+
+  const target = document.getElementById(hash);
+  if (target) {
+    target.classList.add("active");
+  }
+
+  document.querySelectorAll(".nav-link").forEach(link => {
+    link.classList.toggle("active", link.dataset.page === hash);
+  });
+});
+
 });
