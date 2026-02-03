@@ -9,16 +9,16 @@ const app = express();
 
 /* ================= CONFIG (env-ready for Render) ================= */
 const PORT = process.env.PORT || 3000;
-const JWT_SECRET = process.env.JWT_SECRET || "hashone_secure_secret_2026";
+const JWT_SECRET = process.env.JWT_SECRET || "hashonecareers1234";
 const FRONTEND_URL = process.env.FRONTEND_URL || "*";
 
 /* ================= MIDDLEWARE ================= */
-const corsOptions = {
-  origin: FRONTEND_URL === "*" ? true : FRONTEND_URL,
-  credentials: true,
-  optionsSuccessStatus: 200,
-};
-app.use(cors(corsOptions));
+app.use(cors({
+  origin: [
+    "https://hashone-careers.vercel.app"
+  ],
+  credentials: true
+}));
 app.use(express.json({ limit: "5mb" }));
 
 /* ================= DATABASE ================= */
