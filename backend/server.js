@@ -1,72 +1,76 @@
 const express = require("express");
-const sqlite3 = require("sqlite3").verbose();
 const bcrypt = require("bcryptjs");
 const jwt = require("jsonwebtoken");
 const cors = require("cors");
-const path = require("path");
+const { Pool } = require("pg");
 
 const app = express();
 
-/* ================= CONFIG (env-ready for Render) ================= */
+/* ================= CONFIG ================= */
 const PORT = process.env.PORT || 3000;
 const JWT_SECRET = process.env.JWT_SECRET || "hashonecareers1234";
-const FRONTEND_URL = process.env.FRONTEND_URL || "*";
+
+if (!process.env.DATABASE_URL) {
+  console.error("❌ DATABASE_URL is not set");
+  process.exit(1);
+}
+
 
 /* ================= MIDDLEWARE ================= */
 app.use(cors({
-  origin: [
-    "https://hashone-careers.vercel.app"
-  ],
+  origin: "*",
   credentials: true
 }));
-app.use(express.json({ limit: "5mb" }));
+app.use(express.json({ limit: "10mb" }));
 
 /* ================= DATABASE ================= */
-const dbPath = path.join(__dirname, "hashone.db");
-const db = new sqlite3.Database(dbPath);
-
-db.serialize(() => {
-  db.run(`
-    CREATE TABLE IF NOT EXISTS admins (
-      id INTEGER PRIMARY KEY AUTOINCREMENT,
-      username TEXT UNIQUE,
-      password TEXT
-    )
-  `);
-
-  db.run(`
-    CREATE TABLE IF NOT EXISTS jobs (
-    id INTEGER PRIMARY KEY AUTOINCREMENT,
-    title TEXT NOT NULL,
-    location TEXT NOT NULL,
-    experience TEXT NOT NULL,
-    job_type TEXT NOT NULL,
-    description TEXT NOT NULL,
-    formUrl TEXT NOT NULL,
-    created_at DATETIME DEFAULT CURRENT_TIMESTAMP
-    )`
-  );
-
-
-  db.run(`
-    CREATE TABLE IF NOT EXISTS site_content (
-    section_key TEXT PRIMARY KEY,
-    content TEXT
-    )`
-  );
-
-  db.run(`
-    CREATE TABLE IF NOT EXISTS team_members (
-    id INTEGER PRIMARY KEY AUTOINCREMENT,
-    name TEXT NOT NULL,
-    role TEXT NOT NULL,
-    bio TEXT,
-    photo TEXT,
-    sort_order INTEGER DEFAULT 0,
-    created_at DATETIME DEFAULT CURRENT_TIMESTAMP
-    )`
-  );
+const pool = new Pool({
+  connectionString: process.env.DATABASE_URL,
+  ssl: { rejectUnauthorized: false }
 });
+
+/* ================= INIT TABLES ================= */
+async function initDB() {
+  try {
+    await pool.query(`
+      CREATE TABLE IF NOT EXISTS admins (
+        id SERIAL PRIMARY KEY,
+        username TEXT UNIQUE NOT NULL,
+        password TEXT NOT NULL
+      );
+
+      CREATE TABLE IF NOT EXISTS jobs (
+        id SERIAL PRIMARY KEY,
+        title TEXT NOT NULL,
+        location TEXT NOT NULL,
+        experience TEXT NOT NULL,
+        job_type TEXT NOT NULL,
+        description TEXT NOT NULL,
+        formurl TEXT NOT NULL,
+        created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+      );
+
+      CREATE TABLE IF NOT EXISTS site_content (
+        section_key TEXT PRIMARY KEY,
+        content JSONB
+      );
+
+      CREATE TABLE IF NOT EXISTS team_members (
+        id SERIAL PRIMARY KEY,
+        name TEXT NOT NULL,
+        role TEXT NOT NULL,
+        bio TEXT,
+        photo TEXT,
+        sort_order INTEGER DEFAULT 0,
+        created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+      );
+    `);
+
+    console.log("✅ PostgreSQL database ready");
+  } catch (err) {
+    console.error("❌ Database init failed:", err.message);
+  }
+}
 
 /* ================= AUTH MIDDLEWARE ================= */
 function auth(req, res, next) {
@@ -80,201 +84,188 @@ function auth(req, res, next) {
   });
 }
 
-/* ================= AUTH ROUTES ================= */
+/* ================= ADMIN AUTH ================= */
 
-// Verify token (for admin page load)
+// Admin login
+app.post("/api/admin/login", async (req, res) => {
+  const { username, password } = req.body;
+
+  const result = await pool.query(
+    "SELECT * FROM admins WHERE username=$1",
+    [username]
+  );
+
+  const admin = result.rows[0];
+  if (!admin || !bcrypt.compareSync(password, admin.password)) {
+    return res.status(401).json({ message: "Invalid credentials" });
+  }
+
+  const token = jwt.sign({ id: admin.id }, JWT_SECRET, { expiresIn: "12h" });
+  res.json({ token });
+});
+
+// Verify admin
 app.get("/api/admin/me", auth, (req, res) => {
   res.json({ ok: true, id: req.user.id });
 });
 
-// Admin login
-app.post("/api/admin/login", (req, res) => {
+// One-time admin setup
+app.post("/api/admin/setup", async (req, res) => {
+  const count = await pool.query("SELECT COUNT(*) FROM admins");
+  if (parseInt(count.rows[0].count) > 0) {
+    return res.status(403).json({ message: "Admin already set" });
+  }
+
   const { username, password } = req.body;
+  const hash = bcrypt.hashSync(password, 10);
 
-  db.get(
-    "SELECT * FROM admins WHERE username = ?",
-    [username],
-    (err, admin) => {
-      if (!admin || !bcrypt.compareSync(password, admin.password)) {
-        return res.status(401).json({ message: "Invalid credentials" });
-      }
-
-      const token = jwt.sign({ id: admin.id }, JWT_SECRET, {
-        expiresIn: "12h",
-      });
-
-      res.json({ token });
-    }
+  await pool.query(
+    "INSERT INTO admins (username, password) VALUES ($1,$2)",
+    [username, hash]
   );
+
+  res.json({ success: true });
 });
 
-// SETUP or RESET ADMIN
-app.post("/api/admin/setup", (req, res) => {
-  db.get("SELECT COUNT(*) AS count FROM admins", (err, row) => {
-    if (row.count > 0 && !req.query.reset) {
-      return res.status(403).json({ message: "Admin already set" });
-    }
+// Manual password change (SAFE)
+app.put("/api/admin/change-password", auth, async (req, res) => {
+  const { newPassword } = req.body;
+  const hash = bcrypt.hashSync(newPassword, 10);
 
-    const { username, password } = req.body;
-    const hashedPassword = bcrypt.hashSync(password, 10);
-
-    db.serialize(() => {
-      db.run("DELETE FROM admins");
-      db.run(
-        "INSERT INTO admins (username, password) VALUES (?, ?)",
-        [username, hashedPassword],
-        () => res.json({ success: true })
-      );
-    });
-  });
-});
-
-/* ================= SITE CONTENT ROUTES ================= */
-
-// PUBLIC – Get all site content (home, about, contact)
-app.get("/api/site-content", (req, res) => {
-  db.all("SELECT section_key, content FROM site_content", [], (err, rows) => {
-    if (err) return res.status(500).json({ message: "Database error" });
-    const out = {};
-    (rows || []).forEach((r) => {
-      try {
-        out[r.section_key] = r.content ? JSON.parse(r.content) : {};
-      } catch (e) {
-        out[r.section_key] = {};
-      }
-    });
-    res.json(out);
-  });
-});
-
-// ADMIN – Update site content section
-app.put("/api/site-content", auth, (req, res) => {
-  const { section, data } = req.body;
-  if (!section || typeof data !== "object") {
-    return res.status(400).json({ message: "section and data required" });
-  }
-  const content = JSON.stringify(data);
-  db.run(
-    "INSERT INTO site_content (section_key, content) VALUES (?, ?) ON CONFLICT(section_key) DO UPDATE SET content = excluded.content",
-    [section, content],
-    (err) => {
-      if (err) return res.status(500).json({ message: "Database error" });
-      res.json({ success: true });
-    }
+  await pool.query(
+    "UPDATE admins SET password=$1 WHERE id=$2",
+    [hash, req.user.id]
   );
+
+  res.json({ success: true });
 });
 
-/* ================= TEAM MEMBERS ROUTES ================= */
+/* ================= JOBS ================= */
 
-// PUBLIC – Get all team members
-app.get("/api/team-members", (req, res) => {
-  db.all(
-    "SELECT id, name, role, bio, photo FROM team_members ORDER BY sort_order ASC, id ASC",
-    [],
-    (err, rows) => {
-      if (err) return res.status(500).json({ message: "Database error" });
-      res.json(rows || []);
-    }
+// Get jobs
+app.get("/api/jobs", async (req, res) => {
+  const result = await pool.query(
+    "SELECT * FROM jobs ORDER BY created_at DESC"
   );
+  res.json(result.rows);
 });
 
-// ADMIN – Create team member
-app.post("/api/team-members", auth, (req, res) => {
-  const { name, role, bio, photo } = req.body;
-  if (!name || !role) {
-    return res.status(400).json({ message: "name and role required" });
-  }
-  db.run(
-    "INSERT INTO team_members (name, role, bio, photo, sort_order) VALUES (?, ?, ?, ?, ?)",
-    [name, role || "", bio || "", photo || "", 0],
-    function (err) {
-      if (err) return res.status(500).json({ message: "Database error" });
-      res.json({ success: true, id: this.lastID });
-    }
-  );
-});
-
-// ADMIN – Update team member
-app.put("/api/team-members/:id", auth, (req, res) => {
-  const { name, role, bio, photo } = req.body;
-  const id = req.params.id;
-  db.run(
-    "UPDATE team_members SET name=?, role=?, bio=?, photo=? WHERE id=?",
-    [name || "", role || "", bio || "", photo || "", id],
-    (err) => {
-      if (err) return res.status(500).json({ message: "Database error" });
-      res.json({ success: true });
-    }
-  );
-});
-
-// ADMIN – Delete team member
-app.delete("/api/team-members/:id", auth, (req, res) => {
-  db.run("DELETE FROM team_members WHERE id=?", [req.params.id], (err) => {
-    if (err) return res.status(500).json({ message: "Database error" });
-    res.json({ success: true });
-  });
-});
-
-/* ================= JOB ROUTES ================= */
-
-// PUBLIC – Get all jobs
-app.get("/api/jobs", (req, res) => {
-  db.all("SELECT * FROM jobs ORDER BY created_at DESC", [], (err, rows) => {
-    if (err) return res.status(500).json({ message: "Database error" });
-    res.json(rows || []);
-  });
-});
-
-// ADMIN – Create job
-app.post("/api/jobs", auth, (req, res) => {
+// Create job
+app.post("/api/jobs", auth, async (req, res) => {
   const { title, location, experience, type, description, formUrl } = req.body;
 
-  if (!title || !location || !experience || !type || !description || !formUrl) {
-    return res.status(400).json({ message: "All fields required" });
-  }
-
-  db.run(
-    `INSERT INTO jobs (title, location, experience, job_type, description, formUrl)
-    VALUES (?, ?, ?, ?, ?, ?)`,
-    [title, location, experience, type, description, formUrl],
-    function (err) {
-      if (err) {
-        console.error(err);
- 
-        return res.status(500).json({ message: err.message });
-      }
-      res.json({ success: true, id: this.lastID });
-    }
+  await pool.query(
+    `INSERT INTO jobs (title, location, experience, job_type, description, formurl)
+     VALUES ($1,$2,$3,$4,$5,$6)`,
+    [title, location, experience, type, description, formUrl]
   );
+
+  res.json({ success: true });
 });
 
-// ADMIN – Update job
-app.put("/api/jobs/:id", auth, (req, res) => {
+// Update job
+app.put("/api/jobs/:id", auth, async (req, res) => {
   const { title, location, experience, type, description, formUrl } = req.body;
 
-  
-  db.run(
+  await pool.query(
     `UPDATE jobs
-    SET title=?, location=?, experience=?, job_type=?, description=?, formUrl=?
-    WHERE id=?`,
-    [title, location, experience, type, description, formUrl, req.params.id],
-    (err) => {
-      if (err) return res.status(500).json({ message: err.message });
-      res.json({ success: true });
-    }
+     SET title=$1, location=$2, experience=$3, job_type=$4, description=$5, formurl=$6
+     WHERE id=$7`,
+    [title, location, experience, type, description, formUrl, req.params.id]
   );
+
+  res.json({ success: true });
 });
 
-// ADMIN – Delete job
-app.delete("/api/jobs/:id", auth, (req, res) => {
-  db.run("DELETE FROM jobs WHERE id=?", [req.params.id], (err) => {
-    if (err) return res.status(500).json({ message: "Database error" });
-    res.json({ success: true });
-  });
+// Delete job
+app.delete("/api/jobs/:id", auth, async (req, res) => {
+  await pool.query("DELETE FROM jobs WHERE id=$1", [req.params.id]);
+  res.json({ success: true });
 });
 
-/* ================= SERVER ================= */
+/* ================= SITE CONTENT ================= */
+
+app.get("/api/site-content", async (req, res) => {
+  const result = await pool.query("SELECT * FROM site_content");
+  const out = {};
+  result.rows.forEach(r => out[r.section_key] = r.content || {});
+  res.json(out);
+});
+
+app.put("/api/site-content", auth, async (req, res) => {
+  const { section, data } = req.body;
+
+  await pool.query(
+    `INSERT INTO site_content (section_key, content)
+     VALUES ($1,$2)
+     ON CONFLICT (section_key)
+     DO UPDATE SET content=EXCLUDED.content`,
+    [section, data]
+  );
+
+  res.json({ success: true });
+});
+
+/* ================= TEAM MEMBERS ================= */
+
+app.get("/api/team-members", async (req, res) => {
+  const result = await pool.query(
+    "SELECT * FROM team_members ORDER BY sort_order ASC, id ASC"
+  );
+  res.json(result.rows);
+});
+
+app.post("/api/team-members", auth, async (req, res) => {
+  const { name, role, bio, photo } = req.body;
+
+  await pool.query(
+    `INSERT INTO team_members (name, role, bio, photo)
+     VALUES ($1,$2,$3,$4)`,
+    [name, role, bio || "", photo || ""]
+  );
+
+  res.json({ success: true });
+});
+
+app.put("/api/team-members/:id", auth, async (req, res) => {
+  const { name, role, bio, photo } = req.body;
+
+  await pool.query(
+    `UPDATE team_members
+     SET name=$1, role=$2, bio=$3, photo=$4
+     WHERE id=$5`,
+    [name, role, bio || "", photo || "", req.params.id]
+  );
+
+  res.json({ success: true });
+});
+
+app.delete("/api/team-members/:id", auth, async (req, res) => {
+  await pool.query("DELETE FROM team_members WHERE id=$1", [req.params.id]);
+  res.json({ success: true });
+});
+
+process.on("unhandledRejection", (err) => {
+  console.error("Unhandled Promise Rejection:", err);
+});
+
+process.on("uncaughtException", (err) => {
+  console.error("Uncaught Exception:", err);
+});
+
+initDB();
+
+app.get("/health", async (req, res) => {
+  try {
+    await pool.query("SELECT 1");
+    res.json({ status: "ok", db: "connected" });
+  } catch {
+    res.status(500).json({ status: "error", db: "not connected" });
+  }
+});
+/* ================= START SERVER ================= */
 app.listen(PORT, () => {
-  console.log(`✅ Hashone backend running at http://localhost:${PORT}`);
+  console.log(`🚀 Server running on port ${PORT}`);
 });
+
+
