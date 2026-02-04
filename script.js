@@ -177,16 +177,17 @@ function loadJobsPreview() {
     jobCard.className = "role-card";
     jobCard.setAttribute("data-aos", "fade-up");
     jobCard.setAttribute("data-aos-delay", (index * 100).toString());
-    const desc = (job.description || "").substring(0, 100);
+    const desc = (job.description || "").substring(0, 1000);
     jobCard.innerHTML = `
       <div class="role-header">
         <h3 class="role-title">${escapeHtml(job.title)}</h3>
         <div class="role-meta">
           <span class="meta-item"><i class="fas fa-map-marker-alt"></i> ${escapeHtml(job.location)}</span>
           <span class="meta-item"><i class="fas fa-briefcase"></i> ${escapeHtml(job.experience)}</span>
+          <span class="meta-item"><i class="fas fa-clock"></i> ${escapeHtml(job.type)}</span>
         </div>
       </div>
-      <p class="role-description">${escapeHtml(desc)}${job.description && job.description.length > 100 ? "..." : ""}</p>
+      <p class="role-description">${escapeHtml(desc)}${job.description && job.description.length > 1000 ? "..." : ""}</p>
       <a href="#" data-page="roles" class="btn-apply">View Details</a>
     `;
     rolesPreview.appendChild(jobCard);
