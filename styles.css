@@ -3831,3 +3831,16 @@ body:has(.admin-navbar) {
     font-size: 0.9rem;
   }
 }
+
+/* ===== Make Reason dropdown blue ===== */
+
+.contact-form select {
+    background: #31446c !important;
+    color: white !important;
+}
+
+/* Dropdown option list */
+.contact-form select option {
+    background: #20345e;
+    color: white;
+}
