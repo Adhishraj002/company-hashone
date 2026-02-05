@@ -152,7 +152,7 @@ function renderJobs() {
         <div class="role-meta">
           <span class="meta-item"><i class="fas fa-map-marker-alt"></i> ${escapeHtml(job.location)}</span>
           <span class="meta-item"><i class="fas fa-briefcase"></i> ${escapeHtml(job.experience)}</span>
-          <span class="meta-item"><i class="fas fa-clock"></i> ${escapeHtml(job.type)}</span>
+          <span class="meta-item"><i class="fas fa-clock"></i> ${escapeHtml(job.job_type)}</span>
         </div>
       </div>
       <p class="role-description">${escapeHtml(job.description)}</p>
@@ -184,7 +184,7 @@ function loadJobsPreview() {
         <div class="role-meta">
           <span class="meta-item"><i class="fas fa-map-marker-alt"></i> ${escapeHtml(job.location)}</span>
           <span class="meta-item"><i class="fas fa-briefcase"></i> ${escapeHtml(job.experience)}</span>
-          <span class="meta-item"><i class="fas fa-clock"></i> ${escapeHtml(job.type)}</span>
+          <span class="meta-item"><i class="fas fa-clock"></i> ${escapeHtml(job.job_type)}</span>
         </div>
       </div>
       <p class="role-description">${escapeHtml(desc)}${job.description && job.description.length > 1000 ? "..." : ""}</p>
