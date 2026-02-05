@@ -129,12 +129,21 @@ function loadJobs() {
       return res.json();
     })
     .then((data) => {
-      jobs = data;
+
+      // ✅ Normalize backend fields
+      jobs = data.map(job => ({
+        ...job,
+        job_type: job.job_type || job.type,
+        formUrl: job.formUrl || job.formurl || ""
+      }));
+
+      // ✅ Call render AFTER mapping
       renderJobs();
       loadJobsPreview();
     })
     .catch((err) => console.error(err));
 }
+
 
 function renderJobs() {
   const rolesGrid = document.getElementById("rolesGrid");

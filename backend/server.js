@@ -146,11 +146,22 @@ app.put("/api/admin/change-password", auth, async (req, res) => {
 
 // Get jobs
 app.get("/api/jobs", async (req, res) => {
-  const result = await pool.query(
-    "SELECT * FROM jobs ORDER BY created_at DESC"
-  );
+  const result = await pool.query(`
+    SELECT
+      id,
+      title,
+      location,
+      experience,
+      job_type AS type,
+      description,
+      formurl AS "formUrl"
+    FROM jobs
+    ORDER BY created_at DESC
+  `);
+
   res.json(result.rows);
 });
+
 
 // Create job
 app.post("/api/jobs", auth, async (req, res) => {

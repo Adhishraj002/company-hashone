@@ -479,12 +479,19 @@
             fetch(API_BASE + "/api/jobs")
             .then(res => res.json())
             .then(data => {
-                jobs = data;
+   
+                // ⭐ NORMALIZE DATA
+                jobs = data.map(job => ({
+                    ...job,
+                    job_type: job.job_type || job.type,
+                    formUrl: job.formUrl || job.formurl || ""
+                }));
                 renderJobs();
                 updateStats();
             })
             .catch(err => console.error("Failed to load jobs", err));
         }
+
 
 
         function renderJobs() {
@@ -510,7 +517,7 @@
                     <div class="job-meta">
                         <span><i class="fas fa-map-marker-alt"></i> ${job.location}</span>
                         <span><i class="fas fa-briefcase"></i> ${job.experience}</span>
-                        <span><i class="fas fa-clock"></i> ${job.type}</span>
+                        <span><i class="fas fa-clock"></i> ${job.job_type}</span>
                     </div>
                     <div class="job-description">${job.description}</div>
                     <div class="job-actions">
@@ -582,9 +589,10 @@
                 document.getElementById('jobTitle').value = job.title;
                 document.getElementById('jobLocation').value = job.location;
                 document.getElementById('jobExperience').value = job.experience;
-                document.getElementById('jobType').value = job.type;
+                document.getElementById('jobType').value = job.job_type;
                 document.getElementById('jobDescription').value = job.description;
-                document.getElementById('jobFormUrl').value = job.formUrl;
+                document.getElementById('jobFormUrl').value =
+                job.formUrl || job.formurl || "#";
 
                 const form = document.getElementById('jobForm');
                 const panelTitle = document.getElementById('panelTitle');
