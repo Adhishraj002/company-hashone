@@ -276,23 +276,21 @@ app.get("/health", async (req, res) => {
     res.status(500).json({ status: "error", db: "not connected" });
   }
 });
-/* ================= START SERVER ================= */
-app.listen(PORT, () => {
-  console.log(`🚀 Server running on port ${PORT}`);
-});
 
 const { Resend } = require("resend");
 const resend = new Resend(process.env.RESEND_API_KEY);
 
 app.post("/api/enquiry", async (req, res) => {
 
+  console.log("🔥 ENQUIRY HIT:", req.body);
+
   const { name, email, phone, message } = req.body;
 
   try {
 
-    await resend.emails.send({
+    const result = await resend.emails.send({
       from: "onboarding@resend.dev",
-      to: "adhishr61@gmail.com",   // ← RECEIVE HERE
+      to: "adhishr61@gmail.com",
       subject: "New Website Enquiry",
       html: `
         <h2>New Enquiry</h2>
@@ -303,11 +301,19 @@ app.post("/api/enquiry", async (req, res) => {
       `
     });
 
+    console.log("📧 RESEND RESULT:", result);
+
     res.json({ success: true });
 
   } catch (err) {
-    console.error(err);
+    console.error("❌ EMAIL ERROR:", err);
     res.status(500).json({ error: "Email failed" });
   }
 
+});
+
+
+/* ================= START SERVER ================= */
+app.listen(PORT, () => {
+  console.log(`🚀 Server running on port ${PORT}`);
 });
