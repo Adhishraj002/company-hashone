@@ -281,4 +281,33 @@ app.listen(PORT, () => {
   console.log(`🚀 Server running on port ${PORT}`);
 });
 
+const { Resend } = require("resend");
+const resend = new Resend(process.env.RESEND_API_KEY);
 
+app.post("/api/enquiry", async (req, res) => {
+
+  const { name, email, phone, message } = req.body;
+
+  try {
+
+    await resend.emails.send({
+      from: "onboarding@resend.dev",
+      to: "adhishr61@gmail.com",   // ← RECEIVE HERE
+      subject: "New Website Enquiry",
+      html: `
+        <h2>New Enquiry</h2>
+        <b>Name:</b> ${name}<br>
+        <b>Email:</b> ${email}<br>
+        <b>Phone:</b> ${phone}<br>
+        <b>Message:</b> ${message}
+      `
+    });
+
+    res.json({ success: true });
+
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ error: "Email failed" });
+  }
+
+});

@@ -430,3 +430,24 @@ document.querySelectorAll(".read-more-btn").forEach((btn) => {
 });
 
 });
+
+document.querySelector("#contactForm")
+.addEventListener("submit", async (e)=>{
+
+  e.preventDefault();
+
+  const data = {
+    name:e.target.name.value,
+    email:e.target.email.value,
+    phone:e.target.phone.value,
+    message:e.target.message.value
+  };
+
+  await fetch(`${API_BASE}/api/enquiry`,{
+    method:"POST",
+    headers:{ "Content-Type":"application/json"},
+    body:JSON.stringify(data)
+  });
+
+  alert("Enquiry Sent!");
+});
